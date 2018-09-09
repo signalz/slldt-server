@@ -8,7 +8,7 @@
 
 CREATE TABLE "student" (
   "student_id" int NOT NULL,
-  "sutdent_name" varchar(200) NOT NULL,
+  "student_name" varchar(200) NOT NULL,
   "admission_date" date,
   "date_of_birth" date,
   "school" varchar(200),
