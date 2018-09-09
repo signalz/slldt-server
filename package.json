@@ -1,0 +1,19 @@
+{
+  "name": "slldt-server",
+  "version": "0.0.1",
+  "description": "server for slldt",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/signalz/slldt-server.git"
+  },
+  "author": "Son Nguyen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/signalz/slldt-server/issues"
+  },
+  "homepage": "https://github.com/signalz/slldt-server#readme"
+}
