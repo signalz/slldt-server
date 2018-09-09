@@ -2,8 +2,9 @@
   "name": "slldt-server",
   "version": "0.0.1",
   "description": "server for slldt",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
+    "start": "node ./bin/www",
     "test": "test"
   },
   "repository": {
@@ -15,5 +16,15 @@
   "bugs": {
     "url": "https://github.com/signalz/slldt-server/issues"
   },
-  "homepage": "https://github.com/signalz/slldt-server#readme"
+  "homepage": "https://github.com/signalz/slldt-server#readme",
+  "dependencies": {
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "express": "~4.16.0",
+    "http-errors": "~1.6.2",
+    "morgan": "~1.9.0",
+    "pg": "^7.4.3",
+    "pg-hstore": "^2.3.2",
+    "pug": "2.0.0-beta11"
+  }
 }
