@@ -52,7 +52,7 @@ CREATE TABLE "score" (
 --   )
 --);
 
-CREATE TABLE "notify" (
+CREATE TABLE "notification" (
   "notify_id" int NOT NULL,
   "student_id" int NOT NULL,
   "content" varchar(200),
