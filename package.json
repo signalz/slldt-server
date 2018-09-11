@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/signalz/slldt-server#readme",
   "dependencies": {
+    "bcrypt": "^3.0.0",
+    "body-parser": "^1.18.3",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "express": "~4.16.0",
@@ -27,6 +29,7 @@
     "passport": "^0.4.0",
     "passport-auth-token": "^1.0.1",
     "passport-local": "^1.0.0",
+    "passport-openid": "^0.4.0",
     "pg": "^7.4.3",
     "pg-hstore": "^2.3.2",
     "pug": "2.0.0-beta11",
