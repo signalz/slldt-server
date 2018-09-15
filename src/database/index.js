@@ -26,7 +26,11 @@ const db = {};
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-const userModel = sequelize.import('user', models.user);
-db.user = userModel;
+// binding models to db
+const keys = Object.keys(models);
+keys.forEach((key) => {
+  const model = sequelize.import(key, models[key]);
+  db[key] = model;
+});
 
 export default db;
