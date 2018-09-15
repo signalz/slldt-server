@@ -167,7 +167,7 @@ REFERENCES "student" ("student_id");
 -- ALTER TABLE "score" ADD CONSTRAINT "fk_score_file_upload_id" FOREIGN KEY("file_upload_id")
 -- REFERENCES "files" ("file_id");
 
-ALTER TABLE "notify" ADD CONSTRAINT "fk_notify_student_id" FOREIGN KEY("student_id")
+ALTER TABLE "notification" ADD CONSTRAINT "fk_notify_student_id" FOREIGN KEY("student_id")
 REFERENCES "student" ("student_id");
 
 ALTER TABLE "class_student" ADD CONSTRAINT "fk_class_student_class_id" FOREIGN KEY("class_id")
