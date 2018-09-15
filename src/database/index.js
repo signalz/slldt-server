@@ -1,9 +1,16 @@
 import Sequelize from 'sequelize';
-import config from './config';
+import databaseConfig from './config';
+import models from '../model';
 
-const db = config.database;
-const database = new Sequelize(db.schema, db.user, db.password, {
-  host: db.host,
+const {
+  schema,
+  user,
+  password,
+  host,
+} = databaseConfig;
+
+const sequelize = new Sequelize(schema, user, password, {
+  host,
   dialect: 'postgres',
   operatorsAliases: false,
 
@@ -15,4 +22,11 @@ const database = new Sequelize(db.schema, db.user, db.password, {
   },
 });
 
-module.exports = database;
+const db = {};
+db.sequelize = sequelize;
+db.Sequelize = Sequelize;
+
+const userModel = sequelize.import('user', models.user);
+db.user = userModel;
+
+export default db;

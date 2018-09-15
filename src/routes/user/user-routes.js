@@ -1,8 +1,12 @@
 import express from 'express';
+import db from '../../database';
 
 const routes = () => {
   const router = express.Router();
-  router.get('/', (req, res) => {
+  router.get('/', async (req, res) => {
+    const users = await db.user.findAll();
+    console.log(users);
+    // console.log(db.user.findAll());
     res.send('hello world');
   });
 
