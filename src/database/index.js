@@ -31,6 +31,10 @@ const keys = Object.keys(models);
 keys.forEach((key) => {
   const model = sequelize.import(key, models[key]);
   db[key] = model;
+  // init associate
+  if (db[key].associate) {
+    db[key].associate(db);
+  }
 });
 
 export default db;
