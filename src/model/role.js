@@ -5,6 +5,7 @@ const RoleModel = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       primaryKey: true,
       allowNull: false,
+      autoIncrement: true,
     },
     roleName: {
       field: 'role_name',

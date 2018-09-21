@@ -5,6 +5,7 @@ const FunctionModel = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       primaryKey: true,
       allowNull: false,
+      autoIncrement: true,
     },
     path: {
       field: 'path',

@@ -5,6 +5,7 @@ const StudentModel = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       primaryKey: true,
       allowNull: false,
+      autoIncrement: true,
     },
     studentName: {
       field: 'student_name',

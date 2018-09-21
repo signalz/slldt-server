@@ -5,6 +5,7 @@ const ClassModel = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       primaryKey: true,
       allowNull: false,
+      autoIncrement: true,
     },
     className: {
       field: 'class_name',

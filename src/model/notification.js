@@ -5,6 +5,7 @@ const NotificationModel = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       primaryKey: true,
       allowNull: false,
+      autoIncrement: true,
     },
     studentId: {
       field: 'student_id',
