@@ -24,12 +24,17 @@ app.use(passport.initialize());
 app.use('/users',
   passport.authenticate('jwt', { session: false }),
   routes.userRoutes());
-
+// login
 app.use('/login', passport.authenticate(
   'local', {
     session: false,
   },
 ), generateToken, routes.authenticationRoutes());
+// auto login with token
+app.use('/login-with-token',
+  passport.authenticate('jwt', { session: false, ignoreExpiration: true }),
+  generateToken,
+  routes.authenticationRoutes());
 app.use('/students', routes.studentRoutes());
 app.use('/students/create', routes.studentRoutes());
 

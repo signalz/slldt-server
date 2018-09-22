@@ -1,5 +1,5 @@
 import Sequelize from 'sequelize';
-import databaseConfig from './config';
+import { databaseConfig } from '../config';
 import models from '../model';
 
 const {

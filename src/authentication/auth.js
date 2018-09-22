@@ -5,9 +5,11 @@ import passportJWT from 'passport-jwt';
 
 const JWTStrategy = passportJWT.Strategy;
 const ExtractJWT = passportJWT.ExtractJwt;
+const SERVER_KEY = 'server secret';
+const TOKEN_EXPIRES = '2d';
 
 const user = {
-  id: 666,
+  userId: 666,
   firstname: 'devils',
   lastname: 'name',
   email: 'devil@he.ll',
@@ -24,7 +26,7 @@ passport.use(new Strategy((username, password, done) => {
 
 passport.use(new JWTStrategy({
   jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-  secretOrKey: 'server secret',
+  secretOrKey: SERVER_KEY,
 },
 (jwtPayload, next) => {
   if (jwtPayload.id === 666) {
@@ -36,9 +38,9 @@ passport.use(new JWTStrategy({
 
 export const generateToken = (req, res, next) => {
   req.token = jwt.sign({
-    id: req.user.id,
-  }, 'server secret', {
-    expiresIn: '2d',
+    id: req.user.userId,
+  }, SERVER_KEY, {
+    expiresIn: TOKEN_EXPIRES,
   });
   next();
 };
