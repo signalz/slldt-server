@@ -36,4 +36,4 @@ app.use('/students/create', routes.studentRoutes());
 
 db.sequelize.sync().then(() => {
   app.listen(5000, () => console.log('Example app listening on port 5000!'));
-});
+}).catch(err => console.log('Cannot connect to databse', err));
