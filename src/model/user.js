@@ -1,11 +1,11 @@
 const UserModel = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
-    // timestamps: 'false',
     userId: {
       field: 'user_id',
       type: DataTypes.INTEGER,
       primaryKey: true,
       allowNull: false,
+      autoIncrement: true,
     },
     userName: {
       field: 'user_name',
@@ -61,6 +61,11 @@ const UserModel = (sequelize, DataTypes) => {
     tableName: 'user',
     createdAt: 'createdDate',
     updatedAt: 'updatedDate',
+    classMethods: {
+      associate: (models) => {
+        User.belongsToMany(models.Role, { through: models.UserRole });
+      },
+    },
   });
 
   return User;

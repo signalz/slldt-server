@@ -1,0 +1,559 @@
+FORMAT: 1A
+HOST: http://polls.apiblueprint.org/
+
+# hjru 
+
+Polls is a simple API allowing consumers to view polls and vote in them.
+
+## Questions Collection [/questions]
+
+
+
+### [POST] --> /login
++ Request
+
+        [
+            {
+                "username": "sonnn",
+                "password": "XXXXX"
+            }
+        ]
++ Response 200 (application/json)
+
+        [
+            {
+                "status": 200,
+                "token": "abdffrktrttr23",
+                "data": [
+                    {
+                        "userId": ,
+                        "userName": "sonnn",
+                        "password": "XXXXX",
+                        "name": "Nguyen Ngoc Son",
+                        "dateOfBirth": "2000-10-05",
+                        "mail": "nguyenngocson@gmail.com",
+                        "phone": "093XXXX",
+                        "address": "Hoang Hoa Tham"
+                    }
+                ]
+            }
+        ]
+
+### [POST] --> /user
++ Request (applicatoin/json)
+        {
+            "userName": "sonnn",
+            "password": "XXXXX",
+            "name": "Nguyen Ngoc Son",
+            "dateOfBirth": "2000-10-05",
+            "mail": "nguyenngocson@gmail.com",
+            "phone": "093XXXX",
+            "address": "Hoang Hoa Tham"
+        }
+        
+ + Response 200 (application/json)
+
+    + Headers
+
+            
+
+    + Body
+        
+            {   
+                "status": 200,
+                "data": [
+                    {
+                        "userId": 01,
+                        "userName": "sonnn",
+                        "password": "XXXXX",
+                        "name": "Nguyen Ngoc Son",
+                        "dateOfBirth": "2000-10-05",
+                        "mail": "nguyenngocson@gmail.com",
+                        "phone": "093XXXX",
+                        "address": "Hoang Hoa Tham" 
+                    }
+                ]
+                
+            }     
+
+### [PATCH] --> /user/id
++ Request (applicatoin/json)
+        {
+            "userId": 01,
+            "userName": "sonnn",
+            "password": "XXXXX",
+            "name": "Nguyen Ngoc Son",
+            "dateOfBirth": "2000-10-05",
+            "mail": "nguyenngocson@gmail.com",
+            "phone": "093XXXX",
+            "address": "Hoang Hoa Tham"
+        }
+        
+ + Response 200 (application/json)
+
+    + Headers
+
+            
+
+    + Body
+        
+            {   
+                "status": 200,
+                "data": [
+                    {
+                        "userId": 01,
+                        "userName": "sonnn",
+                        "password": "XXXXX",
+                        "name": "Nguyen Ngoc Son",
+                        "dateOfBirth": "2000-10-05",
+                        "mail": "nguyenngocson@gmail.com",
+                        "phone": "093XXXX",
+                        "address": "Hoang Hoa Tham" 
+                    }
+                ]
+                
+            }
+
+### [DELETE] --> user/id
++ Request (applicatoin/json)
+        {   
+            "userId": 01
+        }
+        
++ Response 200 (application/json)
+
+    + Headers
+            
+
+    + Body
+        [
+            {   
+                "status": 200
+            }  
+        ]
+
+### [GET] --> /student?name=xxx&class=yyy&age=zzz&admissionDate=2018-01-01
+
++ Request
+    + Headers
+            
++ Response 200 (application/json)
+
+    + Headers
+
+            
+
+    + Body
+
+            {   
+                
+                "status": 200,
+                "data": [
+                    {   
+                        
+                        "studentId": 01,
+                        "studentName": "Nguyen Ngoc Son",
+                        "age": 7,
+                        "parentName": "XXXXXX",
+                        "parentPhone": "093XXXXX",
+                        "admissionDate": "2018-01-01"
+                    }, {
+                        "studentId": 02,
+                        "studentName": "Tran Duc Minh",
+                        "age": 7,
+                        "parentName": "XXXXXX",
+                        "parentPhone": "093XXXXX",
+                        "admissionDate": "2018-01-01"
+                    }
+                ]
+            }
+### [POST] --> student
++ Request (applicatoin/json)
+        {
+            "studentName": "Nguyen Van A",
+            "class": "6A",
+            "school": "Trưng Vương",
+            "age": 7,
+            "admissionDate": "2018-01-01",
+            "parentName": "Nguyen Van B",
+            "parentPhone": "09XXXXXX",
+            "parentMail": "xyz@gmail.com",
+            "address": "Số 89 đường xyz",
+            "scores": [
+                {
+                    "month": 1,
+                    "score": "Listening: 8, Reading: 4",
+                    "link": "http://youtube/...",
+                    "file": ""
+                },
+                {
+                    "month": 2,
+                    "score": "Writing: 8, Reading: 4",
+                    "link": "http://youtube/...",
+                    "file": ""
+                }
+            ]
+        }
+        
+ + Response 200 (application/json)
+
+    + Headers
+
+            
+
+    + Body
+        
+            {   
+                "status": 200,
+                "data": [
+                    "studentId": 03,
+                    "studentName": "Nguyen Van A",
+                    "class": "6A",
+                    "school": "Trưng Vương",
+                    "age": 7,
+                    "admissionDate": "2018-01-01",
+                    "parentName": "Nguyen Van B",
+                    "parentPhone": "09XXXXXX",
+                    "parentMail": "xyz@gmail.com",
+                    "address": "Số 89 đường xyz",
+                    "scores": [
+                        {
+                            "month": 1,
+                            "score": "Listening: 8, Reading: 4",
+                            "link": "http://youtube/...",
+                            "file": ""
+                        },
+                        {
+                            "month": 2,
+                            "score": "Writing: 8, Reading: 4",
+                            "link": "http://youtube/...",
+                            "file": ""
+                        }
+                    ]
+                ]
+                
+            }       
+
+        
+### [PATCH] --> student/id
++ Request
+     [
+        {
+            "studentId": 03,
+            "studentName": "Nguyen Van A",
+            "class": "6A",
+            "school": "Trưng Vương",
+            "age": 7,
+            "admissionDate": "2018-01-01",
+            "parentName": "Nguyen Van B",
+            "parentPhone": "09XXXXXX",
+            "parentMail": "xyz@gmail.com",
+            "address": "Số 89 đường xyz",
+            "scores": [
+                {
+                    "month": 1,
+                    "score": "Listening: 8, Reading: 4",
+                    "link": "http://youtube/...",
+                    "file": ""
+                },
+                {
+                    "month": 2,
+                    "score": "Writing: 8, Reading: 4",
+                    "link": "http://youtube/...",
+                    "file": ""
+                }
+            ]
+        }
+    ]   
+    
++ Response 200 (application/json)
+    + Headers
+
+            
+
+    + Body
+        [    
+            {
+                "status": 200,
+                "data": [
+                    {
+                        "studentId": 03,
+                        "studentName": "Nguyen Van A",
+                        "class": "6A",
+                        "school": "Trưng Vương",
+                        "age": 7,
+                        "admissionDate": "2018-01-01",
+                        "parentName": "Nguyen Van B",
+                        "parentPhone": "09XXXXXX",
+                        "parentMail": "xyz@gmail.com",
+                        "address": "Số 89 đường xyz",
+                        "scores": [
+                            {
+                                "month": 1,
+                                "score": "Listening: 8, Reading: 4",
+                                "link": "http://youtube/...",
+                                "file": ""
+                            },
+                            {
+                                "month": 2,
+                                "score": "Writing: 8, Reading: 4",
+                                "link": "http://youtube/...",
+                                "file": ""
+                            }
+                        ]
+                    }
+                ]
+                
+            }  
+        ]
+
+### [GET] --> student/id
++ Request
+
++ Response 200 (application/json)
+
+    + Headers
+
+            
+
+    + Body
+
+            {   
+                
+                "status": 200,
+                "data": [
+                    {   
+                        
+                        "studentId": 01,
+                        "studentName": "Nguyen Ngoc Son",
+                        "age": 7,
+                        "parentName": "XXXXXX",
+                        "parentPhone": "093XXXXX",
+                        "admissionDate": "2018-01-01"
+                    }
+                ]
+            }  
+    
+### [DELETE] --> student/id
++ Request (applicatoin/json)
+        {   
+            "studentId": 03
+        }
+        
++ Response 200 (application/json)
+
+    + Headers
+            
+
+    + Body
+        [
+            {   
+                "status": 200
+            }  
+        ]
+        
+        
+### [POST] --> /notify
++ Request (applicatoin/json)
+        {   
+            "studentList": [ "studentId1", "studentId2", "studentId3" ]
+        }
+        
++ Response 200 (application/json)
+
+    + Headers
+
+            
+
+    + Body
+        [
+            {   
+                "status": 200
+                "data": [
+                    "studentId": 03,
+                    "content": "abcxyz"
+                ]
+            }  
+        ]  
+### [GET] --> class?className=aaa?teacherName=bbb?studentName=ccc
++ Request
+    
+    [
+        {
+            "className": "6A",
+            "teacherName": "Nguyen Van B",
+            "studentName": "Nguyen Ngoc Son"
+        }
+    ]
+
++ Response 200 (application/json)
+
+    + Headers
+
+            
+
+    + Body
+        [
+            {   
+                "status": 200,
+                "data": [
+                    {
+                        "classId": "123",
+                        "className": "L01",
+                        "teacherName": "Hoàng Chi",
+                        "teacherPhone": "094XXXXX",
+                        "totalStudent": 10    
+                    }
+                ]
+                
+            }
+        ]
+        
+### [POST] --> class
++ Request (applicatoin/json)
+        {   
+            "className": "L01",
+            "teacherName": "Ngoc Trinh",
+            "teacherPhone": "094XXXXX",
+            "students": [
+                {
+                    "studentId": 01,
+                    "studentName": "XYZ"
+                },
+                {
+                    "studentId": 02,
+                    "studentName": "ABC"
+                }
+            ]
+        }
+        
++ Response 200 (application/json)
+
+    + Headers
+
+            
+
+    + Body
+        [
+            {   
+                "status": 200,
+                "data": [
+                    "classId": 02,
+                    "className": "L01",
+                    "teacherName": "Ngoc Trinh",
+                    "teacherPhone": "094XXXXX",
+                    "students": [
+                        {
+                            "studentId": 01,
+                            "studentName": "XYZ"
+                        },
+                        {
+                            "studentId": 02,
+                            "studentName": "ABC"
+                        }
+                    ]
+                ]
+                
+            }  
+        ]  
+        
+        
+### [PATCH] --> class/id
++ Request (applicatoin/json)
+        {   
+            "classId": 02,
+            "className": "L01",
+            "teacherName": "Ngoc Trinh",
+            "teacherPhone": "094XXXXX",
+            "students": [
+                {
+                    "studentId": 01,
+                    "studentName": "XYZ"
+                },
+                {
+                    "studentId": 02,
+                    "studentName": "XYZ"
+                }
+            ]
+            
+        }
+        
++ Response 200 (application/json)
+
+    + Headers
+
+            
+
+    + Body
+        [
+            {   
+                "status": 200,
+                "data": [
+                    "classId": 02,
+                    "className": "L01",
+                    "teacherName": "Ngoc Trinh",
+                    "teacherPhone": "094XXXXX",
+                    "students": [
+                        {
+                            "studentId": 01,
+                            "studentName": "XYZ"
+                        },
+                        {
+                            "studentId": 02,
+                            "studentName": "XYZ"
+                        }
+                    ]
+                ]
+            }  
+        ] 
+        
+        
+### [GET] --> class/id
++ Request
+        {
+            "classId": 02
+        }
+
++ Response 200 (application/json)
+
+    + Headers
+
+            
+
+    + Body
+
+            {   
+                
+                "status": 200,
+                "data": [
+                    {   
+                        
+                        "studentId": 01,
+                        "studentName": "Nguyen Ngoc Son",
+                        "age": 7,
+                        "parentName": "XXXXXX",
+                        "parentPhone": "093XXXXX",
+                        "admissionDate": "2018-01-01"
+                    }
+                ]
+            }  
+
+    
+### [DELETE] --> class/id
++ Request (applicatoin/json)
+        {   
+            "classId": 02
+        }
+        
++ Response 200 (application/json)
+
+    + Headers
+
+   
+
+    + Body
+        [
+            {   
+                "status": 200
+            }  
+        ]

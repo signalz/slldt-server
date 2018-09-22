@@ -30,6 +30,9 @@ app.use('/login', passport.authenticate(
     session: false,
   },
 ), generateToken, routes.authenticationRoutes());
+app.use('/students', routes.studentRoutes());
+app.use('/students/create', routes.studentRoutes());
+
 
 db.sequelize.sync().then(() => {
   app.listen(5000, () => console.log('Example app listening on port 5000!'));

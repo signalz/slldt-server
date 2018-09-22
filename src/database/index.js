@@ -23,8 +23,6 @@ const sequelize = new Sequelize(schema, user, password, {
 });
 
 const db = {};
-db.sequelize = sequelize;
-db.Sequelize = Sequelize;
 
 // binding models to db
 const keys = Object.keys(models);
@@ -36,5 +34,8 @@ keys.forEach((key) => {
     db[key].associate(db);
   }
 });
+
+db.sequelize = sequelize;
+db.Sequelize = Sequelize;
 
 export default db;
