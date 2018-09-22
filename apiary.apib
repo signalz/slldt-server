@@ -164,8 +164,6 @@ Polls is a simple API allowing consumers to view polls and vote in them.
                         "parentName": "XXXXXX",
                         "parentPhone": "093XXXXX",
                         "admissionDate": "2018-01-01"
-                    }, {
-                        ...
                     }
                 ]
             }
@@ -193,8 +191,7 @@ Polls is a simple API allowing consumers to view polls and vote in them.
                     "score": "Writing: 8, Reading: 4",
                     "link": "http://youtube/...",
                     "file": ""
-                },
-                ...
+                }
             ]
         }
         
@@ -208,7 +205,33 @@ Polls is a simple API allowing consumers to view polls and vote in them.
         
             {   
                 "status": 200,
-                "studentId": 03
+                "data": [
+                    "studentId": 03,
+                    "studentName": "Nguyen Van A",
+                    "class": "6A",
+                    "school": "Trưng Vương",
+                    "age": 7,
+                    "admissionDate": "2018-01-01",
+                    "parentName": "Nguyen Van B",
+                    "parentPhone": "09XXXXXX",
+                    "parentMail": "xyz@gmail.com",
+                    "address": "Số 89 đường xyz",
+                    "scores": [
+                        {
+                            "month": 1,
+                            "score": "Listening: 8, Reading: 4",
+                            "link": "http://youtube/...",
+                            "file": ""
+                        },
+                        {
+                            "month": 2,
+                            "score": "Writing: 8, Reading: 4",
+                            "link": "http://youtube/...",
+                            "file": ""
+                        }
+                    ]
+                ]
+                
             }       
 
         
@@ -285,6 +308,8 @@ Polls is a simple API allowing consumers to view polls and vote in them.
         ]
 
 ### [GET] --> student/id
++ Request
+
 + Response 200 (application/json)
 
     + Headers
@@ -328,10 +353,10 @@ Polls is a simple API allowing consumers to view polls and vote in them.
         ]
         
         
-### [POST] --> notify/studentId
+### [POST] --> /notify
 + Request (applicatoin/json)
         {   
-            "studentId": 03
+            "studentList": [ "studentId1", "studentId2", "studentId3" ]
         }
         
 + Response 200 (application/json)
