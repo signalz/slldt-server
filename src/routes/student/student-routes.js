@@ -20,15 +20,16 @@ const routes = () => {
       address: req.body.address,
       createdBy: 1,
       updatedBy: 1,
-    });
-
-    req.body.scores.forEach((e) => {
-      db.score.create({
-        month: e.month,
-        score: e.score,
-        link: e.link,
-        createdBy: 1,
-        updatedBy: 1,
+    }).then((student) => {
+      req.body.scores.forEach((e) => {
+        db.score.create({
+          studentId: student.studentId,
+          month: e.month,
+          score: e.score,
+          link: e.link,
+          createdBy: 1,
+          updatedBy: 1,
+        });
       });
     });
 
