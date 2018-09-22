@@ -1,23 +1,46 @@
-const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
+import passport from 'passport';
+import Strategy from 'passport-local';
+import jwt from 'jsonwebtoken';
+import passportJWT from 'passport-jwt';
 
-passport.use(new LocalStrategy(
-function(username, password, done) {
-    if (username === 'admin' && password === 'lynda') {
-        console.log("11");
-        return done(null, {username: 'admin'});
-    }
+const JWTStrategy = passportJWT.Strategy;
+const ExtractJWT = passportJWT.ExtractJwt;
 
-    return done(null, false);
-}
-));
+const user = {
+  id: 666,
+  firstname: 'devils',
+  lastname: 'name',
+  email: 'devil@he.ll',
+  verified: true,
+};
 
-passport.serializeUser(function(user, done) {
-done(null, user.username);
-});
+passport.use(new Strategy((username, password, done) => {
+  if (username === 'name' && password === '666') {
+    done(null, user);
+  } else {
+    done(null, false);
+  }
+}));
 
-passport.deserializeUser(function(username, done) {
-done(null, {username: username});
-});
+passport.use(new JWTStrategy({
+  jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+  secretOrKey: 'server secret',
+},
+(jwtPayload, next) => {
+  if (jwtPayload.id === 666) {
+    return next(null, user);
+  }
 
-module.exports = passport;
+  return next();
+}));
+
+export const generateToken = (req, res, next) => {
+  req.token = jwt.sign({
+    id: req.user.id,
+  }, 'server secret', {
+    expiresIn: '2d',
+  });
+  next();
+};
+
+export default passport;

@@ -8,6 +8,7 @@ const routes = () => {
     users.forEach(user => console.log(user.dataValues.userId));
     // console.log(users);
     // console.log(db.user.findAll());
+    console.log(req);
     res.send('hello world');
   });
 

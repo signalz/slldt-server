@@ -1,4 +1,6 @@
-module.exports = {
-    init: require('./init'),
-    middleware: require('./middleware')
-  }
+import passport, { generateToken } from './auth';
+
+export default {
+  passport,
+  generateToken,
+};
