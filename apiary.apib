@@ -7,12 +7,14 @@ Polls is a simple API allowing consumers to view polls and vote in them.
 
 ## Questions Collection [/questions]
 
-### [POST] --> /user/login
+
+
+### [POST] --> /login
 + Request
 
         [
             {
-                "username": "SonNN",
+                "username": "sonnn",
                 "password": "XXXXX"
             }
         ]
@@ -22,37 +24,119 @@ Polls is a simple API allowing consumers to view polls and vote in them.
             {
                 "status": 200,
                 "token": "abdffrktrttr23",
-                "choices": [
+                "data": [
                     {
-                        "choice": "Swift",
-                        "votes": 2048
-                    }, {
-                        "choice": "Python",
-                        "votes": 1024
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 512
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 256
+                        "userId": ,
+                        "userName": "sonnn",
+                        "password": "XXXXX",
+                        "name": "Nguyen Ngoc Son",
+                        "dateOfBirth": "2000-10-05",
+                        "mail": "nguyenngocson@gmail.com",
+                        "phone": "093XXXX",
+                        "address": "Hoang Hoa Tham"
                     }
                 ]
             }
         ]
 
-### [GET] --> student/search
+### [POST] --> /user
++ Request (applicatoin/json)
+        {
+            "userName": "sonnn",
+            "password": "XXXXX",
+            "name": "Nguyen Ngoc Son",
+            "dateOfBirth": "2000-10-05",
+            "mail": "nguyenngocson@gmail.com",
+            "phone": "093XXXX",
+            "address": "Hoang Hoa Tham"
+        }
+        
+ + Response 200 (application/json)
+
+    + Headers
+
+            
+
+    + Body
+        
+            {   
+                "status": 200,
+                "data": [
+                    {
+                        "userId": 01,
+                        "userName": "sonnn",
+                        "password": "XXXXX",
+                        "name": "Nguyen Ngoc Son",
+                        "dateOfBirth": "2000-10-05",
+                        "mail": "nguyenngocson@gmail.com",
+                        "phone": "093XXXX",
+                        "address": "Hoang Hoa Tham" 
+                    }
+                ]
+                
+            }     
+
+### [PATCH] --> /user/id
++ Request (applicatoin/json)
+        {
+            "userId": 01,
+            "userName": "sonnn",
+            "password": "XXXXX",
+            "name": "Nguyen Ngoc Son",
+            "dateOfBirth": "2000-10-05",
+            "mail": "nguyenngocson@gmail.com",
+            "phone": "093XXXX",
+            "address": "Hoang Hoa Tham"
+        }
+        
+ + Response 200 (application/json)
+
+    + Headers
+
+            
+
+    + Body
+        
+            {   
+                "status": 200,
+                "data": [
+                    {
+                        "userId": 01,
+                        "userName": "sonnn",
+                        "password": "XXXXX",
+                        "name": "Nguyen Ngoc Son",
+                        "dateOfBirth": "2000-10-05",
+                        "mail": "nguyenngocson@gmail.com",
+                        "phone": "093XXXX",
+                        "address": "Hoang Hoa Tham" 
+                    }
+                ]
+                
+            }
+
+### [DELETE] --> user/id
++ Request (applicatoin/json)
+        {   
+            "userId": 01
+        }
+        
++ Response 200 (application/json)
+
+    + Headers
+            
+
+    + Body
+        [
+            {   
+                "status": 200
+            }  
+        ]
+
+### [GET] --> /student?name=xxx&class=yyy&age=zzz&admissionDate=2018-01-01
 
 + Request
-    
-    [
-        {
-            "studentName": "Nguyen Van A",
-            "class": "6A",
-            "age": 7,
-            "admissionDate": "2018-01-01"
-        }
-    ]
-
+    + Headers
+            
 + Response 200 (application/json)
 
     + Headers
@@ -62,10 +146,9 @@ Polls is a simple API allowing consumers to view polls and vote in them.
     + Body
 
             {   
+                
                 "status": 200,
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "students": [
+                "data": [
                     {   
                         
                         "studentId": 01,
@@ -86,7 +169,7 @@ Polls is a simple API allowing consumers to view polls and vote in them.
                     }
                 ]
             }
-### [POST] --> student/create
+### [POST] --> student
 + Request (applicatoin/json)
         {
             "studentName": "Nguyen Van A",
@@ -129,11 +212,34 @@ Polls is a simple API allowing consumers to view polls and vote in them.
             }       
 
         
-### [GET] --> student/modify
+### [PATCH] --> student/id
 + Request
      [
         {
-            "studentId": 03
+            "studentId": 03,
+            "studentName": "Nguyen Van A",
+            "class": "6A",
+            "school": "Trưng Vương",
+            "age": 7,
+            "admissionDate": "2018-01-01",
+            "parentName": "Nguyen Van B",
+            "parentPhone": "09XXXXXX",
+            "parentMail": "xyz@gmail.com",
+            "address": "Số 89 đường xyz",
+            "scores": [
+                {
+                    "month": 1,
+                    "score": "Listening: 8, Reading: 4",
+                    "link": "http://youtube/...",
+                    "file": ""
+                },
+                {
+                    "month": 2,
+                    "score": "Writing: 8, Reading: 4",
+                    "link": "http://youtube/...",
+                    "file": ""
+                }
+            ]
         }
     ]   
     
@@ -143,80 +249,86 @@ Polls is a simple API allowing consumers to view polls and vote in them.
             
 
     + Body
-        
-        {
-            "status": 200,
-            "studentId": 03,
-            "studentName": "Nguyen Van A",
-            "class": "6A",
-            "school": "Trưng Vương",
-            "age": 7,
-            "admissionDate": "2018-01-01",
-            "parentName": "Nguyen Van B",
-            "parentPhone": "09XXXXXX",
-            "parentMail": "xyz@gmail.com",
-            "address": "Số 89 đường xyz",
-            "scores": [
-                {
-                    "month": 1,
-                    "score": "Listening: 8, Reading: 4",
-                    "link": "http://youtube/...",
-                    "file": ""
-                },
-                {
-                    "month": 2,
-                    "score": "Writing: 8, Reading: 4",
-                    "link": "http://youtube/...",
-                    "file": ""
-                },
-                ...
-            ]
-        }  
-        
-### [POST] --> student/modify
-+ Request (applicatoin/json)
-        {   
-            "studentId": 03,
-            "studentName": "Nguyen Van A",
-            "class": "6A",
-            "school": "Trưng Vương",
-            "age": 7,
-            "admissionDate": "2018-01-01",
-            "parentName": "Nguyen Van B",
-            "parentPhone": "09XXXXXX",
-            "parentMail": "xyz@gmail.com",
-            "address": "Số 89 đường xyz",
-            "scores": [
-                {
-                    "month": 1,
-                    "score": "Listening: 8, Reading: 4",
-                    "link": "http://youtube/...",
-                    "file": ""
-                },
-                {
-                    "month": 2,
-                    "score": "Writing: 8, Reading: 4",
-                    "link": "http://youtube/...",
-                    "file": ""
-                },
-                ...
-            ]
-        }
-        
- + Response 200 (application/json)
-
-    + Headers
-
-            
-
-    + Body
-        [
-            {   
+        [    
+            {
                 "status": 200,
-                "studentId": 03
+                "data": [
+                    {
+                        "studentId": 03,
+                        "studentName": "Nguyen Van A",
+                        "class": "6A",
+                        "school": "Trưng Vương",
+                        "age": 7,
+                        "admissionDate": "2018-01-01",
+                        "parentName": "Nguyen Van B",
+                        "parentPhone": "09XXXXXX",
+                        "parentMail": "xyz@gmail.com",
+                        "address": "Số 89 đường xyz",
+                        "scores": [
+                            {
+                                "month": 1,
+                                "score": "Listening: 8, Reading: 4",
+                                "link": "http://youtube/...",
+                                "file": ""
+                            },
+                            {
+                                "month": 2,
+                                "score": "Writing: 8, Reading: 4",
+                                "link": "http://youtube/...",
+                                "file": ""
+                            }
+                        ]
+                    }
+                ]
+                
             }  
-        ]    
-### [POST] --> student/delete
+        ]
+
+### [GET] --> student/id
++ Response 200 (application/json)
+
+    + Headers
+
+            
+
+    + Body
+
+            {   
+                
+                "status": 200,
+                "data": [
+                    {   
+                        
+                        "studentId": 01,
+                        "studentName": "Nguyen Ngoc Son",
+                        "age": 7,
+                        "parentName": "XXXXXX",
+                        "parentPhone": "093XXXXX",
+                        "admissionDate": "2018-01-01"
+                    }
+                ]
+            }  
+    
+### [DELETE] --> student/id
++ Request (applicatoin/json)
+        {   
+            "studentId": 03
+        }
+        
++ Response 200 (application/json)
+
+    + Headers
+            
+
+    + Body
+        [
+            {   
+                "status": 200
+            }  
+        ]
+        
+        
+### [POST] --> notify/studentId
 + Request (applicatoin/json)
         {   
             "studentId": 03
@@ -232,32 +344,18 @@ Polls is a simple API allowing consumers to view polls and vote in them.
         [
             {   
                 "status": 200
-            }  
-        ]   
-### [POST] --> student/notify
-+ Request (applicatoin/json)
-        {   
-            "studentId": 03
-        }
-        
-+ Response 200 (application/json)
-
-    + Headers
-
-            
-
-    + Body
-        [
-            {   
-                "status": 200
+                "data": [
+                    "studentId": 03,
+                    "content": "abcxyz"
+                ]
             }  
         ]  
-### [GET] --> class/search
+### [GET] --> class?className=aaa?teacherName=bbb?studentName=ccc
 + Request
     
     [
         {
-            "class": "6A",
+            "className": "6A",
             "teacherName": "Nguyen Van B",
             "studentName": "Nguyen Ngoc Son"
         }
@@ -273,24 +371,20 @@ Polls is a simple API allowing consumers to view polls and vote in them.
         [
             {   
                 "status": 200,
-                "classes": [
+                "data": [
                     {
                         "classId": "123",
                         "className": "L01",
                         "teacherName": "Hoàng Chi",
                         "teacherPhone": "094XXXXX",
                         "totalStudent": 10    
-                    },
-                    {
-                        ...
                     }
                 ]
                 
             }
         ]
         
-### [GET] --> class/create
-### [POST] --> class/create
+### [POST] --> class
 + Request (applicatoin/json)
         {   
             "className": "L01",
@@ -303,9 +397,8 @@ Polls is a simple API allowing consumers to view polls and vote in them.
                 },
                 {
                     "studentId": 02,
-                    "studentName": "XYZ"
-                },
-                ...
+                    "studentName": "ABC"
+                }
             ]
         }
         
@@ -319,13 +412,44 @@ Polls is a simple API allowing consumers to view polls and vote in them.
         [
             {   
                 "status": 200,
-                "classId": 02
+                "data": [
+                    "classId": 02,
+                    "className": "L01",
+                    "teacherName": "Ngoc Trinh",
+                    "teacherPhone": "094XXXXX",
+                    "students": [
+                        {
+                            "studentId": 01,
+                            "studentName": "XYZ"
+                        },
+                        {
+                            "studentId": 02,
+                            "studentName": "ABC"
+                        }
+                    ]
+                ]
+                
             }  
         ]  
-### [GET] --> class/modify
+        
+        
+### [PATCH] --> class/id
 + Request (applicatoin/json)
         {   
             "classId": 02,
+            "className": "L01",
+            "teacherName": "Ngoc Trinh",
+            "teacherPhone": "094XXXXX",
+            "students": [
+                {
+                    "studentId": 01,
+                    "studentName": "XYZ"
+                },
+                {
+                    "studentId": 02,
+                    "studentName": "XYZ"
+                }
+            ]
             
         }
         
@@ -339,44 +463,32 @@ Polls is a simple API allowing consumers to view polls and vote in them.
         [
             {   
                 "status": 200,
-                "classId": 02,
-                "className": "L01",
-                "teacherName": "Ngoc Trinh",
-                "teacherPhone": "094XXXXX",
-                "students": [
-                    {
-                        "studentId": 01,
-                        "studentName": "XYZ"
-                    },
-                    {
-                        "studentId": 02,
-                        "studentName": "XYZ"
-                    },
-                    ...
+                "data": [
+                    "classId": 02,
+                    "className": "L01",
+                    "teacherName": "Ngoc Trinh",
+                    "teacherPhone": "094XXXXX",
+                    "students": [
+                        {
+                            "studentId": 01,
+                            "studentName": "XYZ"
+                        },
+                        {
+                            "studentId": 02,
+                            "studentName": "XYZ"
+                        }
+                    ]
                 ]
             }  
         ] 
-### [POST] --> class/modify
-+ Request (applicatoin/json)
-        {   
-            "classId": 02,
-            "className": "L01",
-            "teacherName": "Ngoc Trinh",
-            "teacherPhone": "094XXXXX",
-            "students": [
-                {
-                    "studentId": 01,
-                    "studentName": "XYZ"
-                },
-                {
-                    "studentId": 02,
-                    "studentName": "XYZ"
-                },
-                ...
-            ]
-            
-        }
         
+        
+### [GET] --> class/id
++ Request
+        {
+            "classId": 02
+        }
+
 + Response 200 (application/json)
 
     + Headers
@@ -384,12 +496,25 @@ Polls is a simple API allowing consumers to view polls and vote in them.
             
 
     + Body
-        [
+
             {   
-                "status": 200
+                
+                "status": 200,
+                "data": [
+                    {   
+                        
+                        "studentId": 01,
+                        "studentName": "Nguyen Ngoc Son",
+                        "age": 7,
+                        "parentName": "XXXXXX",
+                        "parentPhone": "093XXXXX",
+                        "admissionDate": "2018-01-01"
+                    }
+                ]
             }  
-        ] 
-### [POST] --> class/delete
+
+    
+### [DELETE] --> class/id
 + Request (applicatoin/json)
         {   
             "classId": 02
@@ -399,11 +524,11 @@ Polls is a simple API allowing consumers to view polls and vote in them.
 
     + Headers
 
-            
+   
 
     + Body
         [
             {   
                 "status": 200
             }  
-        ]  
+        ]
