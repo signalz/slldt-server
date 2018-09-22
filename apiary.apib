@@ -1,20 +1,27 @@
 FORMAT: 1A
 HOST: http://polls.apiblueprint.org/
 
-# NNS 
+# hjru 
 
 Polls is a simple API allowing consumers to view polls and vote in them.
 
 ## Questions Collection [/questions]
 
-### List All Questions [GET]
+### [POST] --> /user/login
++ Request
 
+        [
+            {
+                "username": "SonNN",
+                "password": "XXXXX"
+            }
+        ]
 + Response 200 (application/json)
 
         [
             {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
+                "status": 200,
+                "token": "abdffrktrttr23",
                 "choices": [
                     {
                         "choice": "Swift",
@@ -33,48 +40,370 @@ Polls is a simple API allowing consumers to view polls and vote in them.
             }
         ]
 
-### Create a New Question [POST]
+### [GET] --> student/search
 
-You may create your own question using this action. It takes a JSON
-object containing a question and a collection of answers in the
-form of choices.
-
-+ Request (application/json)
-
++ Request
+    
+    [
         {
-            "question": "Favourite programming language?",
-            "choices": [
-                "Swift",
-                "Python",
-                "Objective-C",
-                "Ruby"
-            ]
+            "studentName": "Nguyen Van A",
+            "class": "6A",
+            "age": 7,
+            "admissionDate": "2018-01-01"
         }
+    ]
 
-+ Response 201 (application/json)
++ Response 200 (application/json)
 
     + Headers
 
-            Location: /questions/2
+            
 
     + Body
 
-            {
+            {   
+                "status": 200,
                 "question": "Favourite programming language?",
                 "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
-                    {
-                        "choice": "Swift",
-                        "votes": 0
+                "students": [
+                    {   
+                        
+                        "studentId": 01,
+                        "studentName": "Nguyen Ngoc Son",
+                        "age": 7,
+                        "parentName": "XXXXXX",
+                        "parentPhone": "093XXXXX",
+                        "admissionDate": "2018-01-01"
                     }, {
-                        "choice": "Python",
-                        "votes": 0
+                        "studentId": 02,
+                        "studentName": "Tran Duc Minh",
+                        "age": 7,
+                        "parentName": "XXXXXX",
+                        "parentPhone": "093XXXXX",
+                        "admissionDate": "2018-01-01"
                     }, {
-                        "choice": "Objective-C",
-                        "votes": 0
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 0
+                        ...
                     }
                 ]
             }
+### [POST] --> student/create
++ Request (applicatoin/json)
+        {
+            "studentName": "Nguyen Van A",
+            "class": "6A",
+            "school": "Trưng Vương",
+            "age": 7,
+            "admissionDate": "2018-01-01",
+            "parentName": "Nguyen Van B",
+            "parentPhone": "09XXXXXX",
+            "parentMail": "xyz@gmail.com",
+            "address": "Số 89 đường xyz",
+            "scores": [
+                {
+                    "month": 1,
+                    "score": "Listening: 8, Reading: 4",
+                    "link": "http://youtube/...",
+                    "file": ""
+                },
+                {
+                    "month": 2,
+                    "score": "Writing: 8, Reading: 4",
+                    "link": "http://youtube/...",
+                    "file": ""
+                },
+                ...
+            ]
+        }
+        
+ + Response 200 (application/json)
+
+    + Headers
+
+            
+
+    + Body
+        
+            {   
+                "status": 200,
+                "studentId": 03
+            }       
+
+        
+### [GET] --> student/modify
++ Request
+     [
+        {
+            "studentId": 03
+        }
+    ]   
+    
++ Response 200 (application/json)
+    + Headers
+
+            
+
+    + Body
+        
+        {
+            "status": 200,
+            "studentId": 03,
+            "studentName": "Nguyen Van A",
+            "class": "6A",
+            "school": "Trưng Vương",
+            "age": 7,
+            "admissionDate": "2018-01-01",
+            "parentName": "Nguyen Van B",
+            "parentPhone": "09XXXXXX",
+            "parentMail": "xyz@gmail.com",
+            "address": "Số 89 đường xyz",
+            "scores": [
+                {
+                    "month": 1,
+                    "score": "Listening: 8, Reading: 4",
+                    "link": "http://youtube/...",
+                    "file": ""
+                },
+                {
+                    "month": 2,
+                    "score": "Writing: 8, Reading: 4",
+                    "link": "http://youtube/...",
+                    "file": ""
+                },
+                ...
+            ]
+        }  
+        
+### [POST] --> student/modify
++ Request (applicatoin/json)
+        {   
+            "studentId": 03,
+            "studentName": "Nguyen Van A",
+            "class": "6A",
+            "school": "Trưng Vương",
+            "age": 7,
+            "admissionDate": "2018-01-01",
+            "parentName": "Nguyen Van B",
+            "parentPhone": "09XXXXXX",
+            "parentMail": "xyz@gmail.com",
+            "address": "Số 89 đường xyz",
+            "scores": [
+                {
+                    "month": 1,
+                    "score": "Listening: 8, Reading: 4",
+                    "link": "http://youtube/...",
+                    "file": ""
+                },
+                {
+                    "month": 2,
+                    "score": "Writing: 8, Reading: 4",
+                    "link": "http://youtube/...",
+                    "file": ""
+                },
+                ...
+            ]
+        }
+        
+ + Response 200 (application/json)
+
+    + Headers
+
+            
+
+    + Body
+        [
+            {   
+                "status": 200,
+                "studentId": 03
+            }  
+        ]    
+### [POST] --> student/delete
++ Request (applicatoin/json)
+        {   
+            "studentId": 03
+        }
+        
++ Response 200 (application/json)
+
+    + Headers
+
+            
+
+    + Body
+        [
+            {   
+                "status": 200
+            }  
+        ]   
+### [POST] --> student/notify
++ Request (applicatoin/json)
+        {   
+            "studentId": 03
+        }
+        
++ Response 200 (application/json)
+
+    + Headers
+
+            
+
+    + Body
+        [
+            {   
+                "status": 200
+            }  
+        ]  
+### [GET] --> class/search
++ Request
+    
+    [
+        {
+            "class": "6A",
+            "teacherName": "Nguyen Van B",
+            "studentName": "Nguyen Ngoc Son"
+        }
+    ]
+
++ Response 200 (application/json)
+
+    + Headers
+
+            
+
+    + Body
+        [
+            {   
+                "status": 200,
+                "classes": [
+                    {
+                        "classId": "123",
+                        "className": "L01",
+                        "teacherName": "Hoàng Chi",
+                        "teacherPhone": "094XXXXX",
+                        "totalStudent": 10    
+                    },
+                    {
+                        ...
+                    }
+                ]
+                
+            }
+        ]
+        
+### [GET] --> class/create
+### [POST] --> class/create
++ Request (applicatoin/json)
+        {   
+            "className": "L01",
+            "teacherName": "Ngoc Trinh",
+            "teacherPhone": "094XXXXX",
+            "students": [
+                {
+                    "studentId": 01,
+                    "studentName": "XYZ"
+                },
+                {
+                    "studentId": 02,
+                    "studentName": "XYZ"
+                },
+                ...
+            ]
+        }
+        
++ Response 200 (application/json)
+
+    + Headers
+
+            
+
+    + Body
+        [
+            {   
+                "status": 200,
+                "classId": 02
+            }  
+        ]  
+### [GET] --> class/modify
++ Request (applicatoin/json)
+        {   
+            "classId": 02,
+            
+        }
+        
++ Response 200 (application/json)
+
+    + Headers
+
+            
+
+    + Body
+        [
+            {   
+                "status": 200,
+                "classId": 02,
+                "className": "L01",
+                "teacherName": "Ngoc Trinh",
+                "teacherPhone": "094XXXXX",
+                "students": [
+                    {
+                        "studentId": 01,
+                        "studentName": "XYZ"
+                    },
+                    {
+                        "studentId": 02,
+                        "studentName": "XYZ"
+                    },
+                    ...
+                ]
+            }  
+        ] 
+### [POST] --> class/modify
++ Request (applicatoin/json)
+        {   
+            "classId": 02,
+            "className": "L01",
+            "teacherName": "Ngoc Trinh",
+            "teacherPhone": "094XXXXX",
+            "students": [
+                {
+                    "studentId": 01,
+                    "studentName": "XYZ"
+                },
+                {
+                    "studentId": 02,
+                    "studentName": "XYZ"
+                },
+                ...
+            ]
+            
+        }
+        
++ Response 200 (application/json)
+
+    + Headers
+
+            
+
+    + Body
+        [
+            {   
+                "status": 200
+            }  
+        ] 
+### [POST] --> class/delete
++ Request (applicatoin/json)
+        {   
+            "classId": 02
+        }
+        
++ Response 200 (application/json)
+
+    + Headers
+
+            
+
+    + Body
+        [
+            {   
+                "status": 200
+            }  
+        ]  
