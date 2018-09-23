@@ -28,7 +28,12 @@ passport.use(new JWTStrategy({
   jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
   secretOrKey: SERVER_KEY,
 }, (jwtPayload, next) => {
-  if (jwtPayload.id === 666) {
+  const { id, exp } = jwtPayload;
+  // if token expires => user trying to access login-with-token
+  if (exp * 1000 < new Date().getTime()) {
+    return next(null, user, { isExp: true });
+  }
+  if (id === 666) {
     return next(null, user);
   }
 
