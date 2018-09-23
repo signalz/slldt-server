@@ -8,6 +8,7 @@ import RoleModel from './role';
 import FunctionModel from './function';
 import UserRoleModel from './user-role';
 import RoleFunctionModel from './role-function';
+import RefreshTokenModel from './refresh-token';
 
 export default {
   student: StudentModel,
@@ -20,4 +21,5 @@ export default {
   function: FunctionModel,
   user_role: UserRoleModel,
   role_function: RoleFunctionModel,
+  refresh_token: RefreshTokenModel,
 };

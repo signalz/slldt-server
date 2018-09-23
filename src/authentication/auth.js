@@ -15,7 +15,7 @@ passport.use(new Strategy(async (username, password, done) => {
     where: { userName: username },
   });
   // user existed
-  if (user) {
+  if (user.dataValues) {
     // compare password
     if (bcrypt.compareSync(password, user.dataValues.password)) {
       done(null, user.dataValues);
@@ -36,7 +36,7 @@ passport.use(new JWTStrategy({
     where: { userId: id },
   });
 
-  if (user) {
+  if (user.dataValues) {
     // if token expires => user trying to access login-with-token
     if (exp * 1000 < new Date().getTime()) {
       return next(null, user.dataValues, { isExp: true });
