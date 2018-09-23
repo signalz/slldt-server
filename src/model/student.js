@@ -67,9 +67,9 @@ const StudentModel = (sequelize, DataTypes) => {
     updatedAt: 'updatedDate',
     classMethods: {
       associate: (models) => {
-        Student.hasMany(models.Score);
-        Student.hasMany(models.Notification);
-        Student.belongsToMany(models.Class, { through: models.ClassStudent });
+        Student.hasMany(models.score);
+        Student.hasMany(models.notification);
+        Student.belongsToMany(models.class, { through: models.class_student });
       },
     },
   });

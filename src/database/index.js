@@ -26,12 +26,17 @@ const db = {};
 
 // binding models to db
 const keys = Object.keys(models);
+// init db
 keys.forEach((key) => {
   const model = sequelize.import(key, models[key]);
   db[key] = model;
   // init associate
-  if (db[key].associate) {
-    db[key].associate(db);
+  // console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>', db[key].options.classMethods.);
+});
+// associate db
+keys.forEach((key) => {
+  if (db[key].options.classMethods.associate) {
+    db[key].options.classMethods.associate(db);
   }
 });
 

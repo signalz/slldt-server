@@ -63,7 +63,7 @@ const UserModel = (sequelize, DataTypes) => {
     updatedAt: 'updatedDate',
     classMethods: {
       associate: (models) => {
-        User.belongsToMany(models.Role, { through: models.UserRole });
+        User.belongsToMany(models.role, { through: models.user_role });
       },
     },
   });

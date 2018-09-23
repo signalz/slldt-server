@@ -27,8 +27,7 @@ passport.use(new Strategy((username, password, done) => {
 passport.use(new JWTStrategy({
   jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
   secretOrKey: SERVER_KEY,
-},
-(jwtPayload, next) => {
+}, (jwtPayload, next) => {
   if (jwtPayload.id === 666) {
     return next(null, user);
   }

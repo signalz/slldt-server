@@ -38,7 +38,7 @@ const FunctionModel = (sequelize, DataTypes) => {
     updatedAt: 'updatedDate',
     classMethods: {
       associate: (models) => {
-        Function.belongsToMany(models.Role, { through: models.RoleFunction });
+        Function.belongsToMany(models.role, { through: models.role_function });
       },
     },
   });
