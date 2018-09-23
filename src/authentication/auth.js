@@ -2,23 +2,26 @@ import passport from 'passport';
 import Strategy from 'passport-local';
 import jwt from 'jsonwebtoken';
 import passportJWT from 'passport-jwt';
+import bcrypt from 'bcryptjs';
+
+import { SERVER_KEY, TOKEN_EXPIRES } from '../config';
+import db from '../database';
 
 const JWTStrategy = passportJWT.Strategy;
 const ExtractJWT = passportJWT.ExtractJwt;
-const SERVER_KEY = 'server secret';
-const TOKEN_EXPIRES = '2d';
 
-const user = {
-  userId: 666,
-  firstname: 'devils',
-  lastname: 'name',
-  email: 'devil@he.ll',
-  verified: true,
-};
-
-passport.use(new Strategy((username, password, done) => {
-  if (username === 'name' && password === '666') {
-    done(null, user);
+passport.use(new Strategy(async (username, password, done) => {
+  const user = await db.user.findOne({
+    where: { userName: username },
+  });
+  // user existed
+  if (user) {
+    // compare password
+    if (bcrypt.compareSync(password, user.dataValues.password)) {
+      done(null, user.dataValues);
+    } else {
+      done(null, false);
+    }
   } else {
     done(null, false);
   }
@@ -27,14 +30,19 @@ passport.use(new Strategy((username, password, done) => {
 passport.use(new JWTStrategy({
   jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
   secretOrKey: SERVER_KEY,
-}, (jwtPayload, next) => {
+}, async (jwtPayload, next) => {
   const { id, exp } = jwtPayload;
-  // if token expires => user trying to access login-with-token
-  if (exp * 1000 < new Date().getTime()) {
-    return next(null, user, { isExp: true });
-  }
-  if (id === 666) {
-    return next(null, user);
+  const user = await db.user.findOne({
+    where: { userId: id },
+  });
+
+  if (user) {
+    // if token expires => user trying to access login-with-token
+    if (exp * 1000 < new Date().getTime()) {
+      return next(null, user.dataValues, { isExp: true });
+    }
+
+    return next(null, user.dataValues);
   }
 
   return next();

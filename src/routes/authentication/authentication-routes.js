@@ -4,8 +4,11 @@ import crypto from 'crypto';
 const sendResponse = (req, res) => {
   const refreshToken = `${req.user.userId.toString()}.${crypto.randomBytes(40).toString('hex')}`;
   // TODO: save refresh token to db
+  const { user } = req;
+  // remove password before sending back to user
+  delete user.password;
   res.status(200).json({
-    user: req.user,
+    user,
     token: req.token,
     refreshToken,
   });
