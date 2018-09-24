@@ -73,12 +73,11 @@ const UserModel = (sequelize, DataTypes) => {
     tableName: 'user',
     createdAt: 'createdDate',
     updatedAt: 'updatedDate',
-    classMethods: {
-      associate: (models) => {
-        User.belongsToMany(models.role, { through: models.user_role });
-      },
-    },
   });
+  // Class Method
+  User.associate = (models) => {
+    User.belongsToMany(models.role, { through: models.user_role });
+  };
 
   // Instance Method
   User.prototype.isPasswordMatched = function isPasswordMatched(password) {
