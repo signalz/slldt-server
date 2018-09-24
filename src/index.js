@@ -21,9 +21,6 @@ app.use(passport.initialize());
 //   next(createError(404, 'This page does not exist'));
 // });
 
-app.use('/users',
-  // passport.authenticate('jwt', { session: false }),
-  routes.userRoutes());
 // login
 app.use('/login', passport.authenticate(
   'local', {
@@ -35,6 +32,10 @@ app.use('/login-with-token',
   passport.authenticate('jwt', { session: false, ignoreExpiration: true }),
   generateToken,
   routes.authenticationRoutes());
+
+app.use('/users',
+  passport.authenticate('jwt', { session: false }),
+  routes.userRoutes());
 app.use('/students', routes.studentRoutes());
 app.use('/students/create', routes.studentRoutes());
 app.use('/students/delete', routes.studentRoutes());

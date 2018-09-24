@@ -82,18 +82,23 @@ const UserModel = (sequelize, DataTypes) => {
     },
   });
 
-  function encryptPassword(user, options) {
-    return new Promise((resolve, reject) => {
-      bcrypt.hash(user.password, BCRYPT_SALT, (err, data) => {
-        if (err) reject(err);
-        user.password = data;
-        resolve();
-      });
-    });
-  }
+  const encryptPassword = (plainText) => {
+    const salt = bcrypt.genSaltSync(BCRYPT_SALT);
+    const hash = bcrypt.hashSync(plainText.toString(), salt);
+    return hash;
+  };
 
-  User.beforeCreate(encryptPassword);
-  User.beforeUpdate(encryptPassword);
+  const beforeCreateHook = (user) => {
+    try {
+      // eslint-disable-next-line no-param-reassign
+      user.password = encryptPassword(user.password);
+    } catch (e) {
+      throw new Error('Password cannot be encypted....');
+    }
+  };
+
+  User.beforeCreate(beforeCreateHook);
+  User.beforeUpdate(beforeCreateHook);
 
 
   return User;

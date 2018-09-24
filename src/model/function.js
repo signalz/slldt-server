@@ -9,7 +9,7 @@ const FunctionModel = (sequelize, DataTypes) => {
     },
     functionName: {
       field: 'function_name',
-      type: DataTypes.STRING,  
+      type: DataTypes.STRING,
     },
     method: {
       field: 'method',
