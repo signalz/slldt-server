@@ -22,7 +22,7 @@ app.use(passport.initialize());
 // });
 
 app.use('/users',
-  passport.authenticate('jwt', { session: false }),
+  // passport.authenticate('jwt', { session: false }),
   routes.userRoutes());
 // login
 app.use('/login', passport.authenticate(
@@ -37,6 +37,7 @@ app.use('/login-with-token',
   routes.authenticationRoutes());
 app.use('/students', routes.studentRoutes());
 app.use('/students/create', routes.studentRoutes());
+app.use('/students/delete', routes.studentRoutes());
 
 
 db.sequelize.sync().then(() => {

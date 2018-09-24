@@ -7,6 +7,15 @@ const FunctionModel = (sequelize, DataTypes) => {
       allowNull: false,
       autoIncrement: true,
     },
+    functionName: {
+      field: 'function_name',
+      type: DataTypes.STRING,  
+    },
+    method: {
+      field: 'method',
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     path: {
       field: 'path',
       type: DataTypes.STRING,

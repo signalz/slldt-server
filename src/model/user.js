@@ -1,3 +1,5 @@
+import bcrypt from 'bcryptjs';
+
 const UserModel = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     userId: {
@@ -11,6 +13,7 @@ const UserModel = (sequelize, DataTypes) => {
       field: 'user_name',
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
     },
     password: {
       field: 'password',
@@ -24,10 +27,17 @@ const UserModel = (sequelize, DataTypes) => {
     dateOfBirth: {
       field: 'date_of_birth',
       type: DataTypes.DATE,
+      validate: {
+        isDate: true,
+      },
     },
     mail: {
       field: 'mail',
       type: DataTypes.STRING,
+      validate: {
+        isEmail: true,
+        msg: 'Invalid email',
+      },
     },
     phone: {
       field: 'phone',
@@ -58,6 +68,9 @@ const UserModel = (sequelize, DataTypes) => {
       allowNull: false,
     },
   }, {
+    instanceMethods: {
+      validPassword: password => bcrypt.compareSync(password, this.password),
+    },
     tableName: 'user',
     createdAt: 'createdDate',
     updatedAt: 'updatedDate',
@@ -67,6 +80,20 @@ const UserModel = (sequelize, DataTypes) => {
       },
     },
   });
+
+  function encryptPassword(user, options) {
+    return new Promise((resolve, reject) => {
+      bcrypt.hash(user.password, 8, (err, data) => {
+        if (err) reject(err);
+        user.password = data;
+        resolve();
+      });
+    });
+  }
+
+  User.beforeCreate(encryptPassword);
+  User.beforeUpdate(encryptPassword);
+
 
   return User;
 };

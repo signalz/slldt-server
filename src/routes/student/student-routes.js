@@ -36,6 +36,15 @@ const routes = () => {
     res.send('hello world');
   });
 
+  router.delete('/delete', async (req, res) => {
+    await db.student.destroy({
+      where: {
+        studentId: req.body.studentId,
+      }
+    });
+    res.send('Deleted');
+  })
+
   router.post('/', async (req, res) => {
     console.log(req.body);
     res.send('hello world');
