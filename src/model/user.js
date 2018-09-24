@@ -1,4 +1,5 @@
 import bcrypt from 'bcryptjs';
+import { BCRYPT_SALT } from '../config';
 
 const UserModel = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
@@ -83,7 +84,7 @@ const UserModel = (sequelize, DataTypes) => {
 
   function encryptPassword(user, options) {
     return new Promise((resolve, reject) => {
-      bcrypt.hash(user.password, 8, (err, data) => {
+      bcrypt.hash(user.password, BCRYPT_SALT, (err, data) => {
         if (err) reject(err);
         user.password = data;
         resolve();
