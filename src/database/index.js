@@ -33,8 +33,8 @@ keys.forEach((key) => {
 });
 // associate db
 keys.forEach((key) => {
-  if (db[key].options.classMethods && db[key].options.classMethods.associate) {
-    db[key].options.classMethods.associate(db);
+  if (db[key].associate) {
+    db[key].associate(db);
   }
 });
 

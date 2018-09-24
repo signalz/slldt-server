@@ -1,6 +1,4 @@
 import express from 'express';
-// import bcrypt from 'bcryptjs';
-// import { BCRYPT_SALT } from '../../config';
 
 import db from '../../database';
 
@@ -24,21 +22,23 @@ const routes = () => {
       createdBy,
       updatedBy,
     } = req.body;
-    // hash password using bcrypt
-    // const salt = bcrypt.genSaltSync(BCRYPT_SALT);
-    // const hash = bcrypt.hashSync(password.toString(), salt);
-    await db.user.create({
-      userName: username,
-      password,
-      name,
-      dateOfBirth,
-      mail,
-      phone,
-      address,
-      createdBy,
-      updatedBy,
-    });
-    res.send('hello world');
+    try {
+      await db.user.create({
+        userName: username,
+        password,
+        name,
+        dateOfBirth,
+        mail,
+        phone,
+        address,
+        createdBy,
+        updatedBy,
+      });
+      res.send('hello world');
+    } catch (e) {
+      console.log(e);
+      res.send('Cannot create user');
+    }
   });
 
   return router;

@@ -36,8 +36,9 @@ const UserModel = (sequelize, DataTypes) => {
       field: 'mail',
       type: DataTypes.STRING,
       validate: {
-        isEmail: true,
-        msg: 'Invalid email',
+        isEmail: {
+          msg: 'Invalid email',
+        },
       },
     },
     phone: {
@@ -69,9 +70,6 @@ const UserModel = (sequelize, DataTypes) => {
       allowNull: false,
     },
   }, {
-    instanceMethods: {
-      validPassword: password => bcrypt.compareSync(password, this.password),
-    },
     tableName: 'user',
     createdAt: 'createdDate',
     updatedAt: 'updatedDate',
@@ -82,6 +80,12 @@ const UserModel = (sequelize, DataTypes) => {
     },
   });
 
+  // Instance Method
+  User.prototype.isPasswordMatched = function isPasswordMatched(password) {
+    return bcrypt.compareSync(password, this.password);
+  };
+
+  // hash password using bcrypt
   const encryptPassword = (plainText) => {
     const salt = bcrypt.genSaltSync(BCRYPT_SALT);
     const hash = bcrypt.hashSync(plainText.toString(), salt);

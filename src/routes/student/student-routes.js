@@ -4,12 +4,12 @@ import db from '../../database';
 const routes = () => {
   const router = express.Router();
 
-  router.get('/create', async (req, res) => {
+  router.get('/', async (req, res) => {
     res.send('hello world');
   });
 
-  router.post('/create', async (req, res) => {
-    await db.student.create({
+  router.post('/', async (req, res) => {
+    db.student.create({
       studentName: req.body.studentName,
       admissionDate: req.body.admissionDate,
       dateOfBirth: req.body.dateOfBirth,
@@ -36,19 +36,19 @@ const routes = () => {
     res.send('hello world');
   });
 
-  router.delete('/delete', async (req, res) => {
+  router.delete('/', async (req, res) => {
     await db.student.destroy({
       where: {
         studentId: req.body.studentId,
       },
     });
-    res.send('Deleted');
+    res.status(400).send('Deleted');
   });
 
-  router.post('/', async (req, res) => {
-    console.log(req.body);
-    res.send('hello world');
-  });
+  // router.post('/', async (req, res) => {
+  //   console.log(req.body);
+  //   res.send('hello world');
+  // });
 
   return router;
 };

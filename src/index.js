@@ -36,10 +36,10 @@ app.use('/login-with-token',
 app.use('/users',
   passport.authenticate('jwt', { session: false }),
   routes.userRoutes());
-app.use('/students', routes.studentRoutes());
-app.use('/students/create', routes.studentRoutes());
-app.use('/students/delete', routes.studentRoutes());
 
+app.use('/students',
+  passport.authenticate('jwt', { session: false }),
+  routes.studentRoutes());
 
 db.sequelize.sync().then(() => {
   app.listen(5000, () => console.log('Example app listening on port 5000!'));
