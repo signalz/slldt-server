@@ -10,16 +10,32 @@ const FunctionModel = (sequelize, DataTypes) => {
     functionName: {
       field: 'function_name',
       type: DataTypes.STRING,
+      validate: {
+        len: {
+          args: [0, 250],
+          msg: 'Function Name too long',
+        },
+      },
     },
     method: {
       field: 'method',
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        args: [['POST', 'GET', 'PUT', 'PATCH', 'DELETE', 'ALL']],
+        msg: 'Wrong Method',
+      },
     },
     path: {
       field: 'path',
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        len: {
+          args: [0, 250],
+          msg: 'Function Name too long',
+        },
+      },
     },
     createdBy: {
       field: 'created_by',
@@ -45,12 +61,12 @@ const FunctionModel = (sequelize, DataTypes) => {
     tableName: 'function',
     createdAt: 'createdDate',
     updatedAt: 'updatedDate',
-    classMethods: {
-      associate: (models) => {
-        Function.belongsToMany(models.role, { through: models.role_function });
-      },
-    },
   });
+
+  // Class method
+  Function.associate = (models) => {
+    Function.belongsToMany(models.role, { through: models.role_function, foreignKey: 'function_id', onDelete: 'CASCADE' });
+  };
 
   return Function;
 };

@@ -16,10 +16,22 @@ const ScoreModel = (sequelize, DataTypes) => {
       field: 'score',
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        len: {
+          args: [0, 250],
+          msg: 'Score too long',
+        },
+      },
     },
     link: {
       field: 'link',
       type: DataTypes.STRING,
+      validate: {
+        len: {
+          args: [0, 250],
+          msg: 'Link too long',
+        },
+      },
     },
     createdBy: {
       field: 'created_by',
@@ -46,16 +58,6 @@ const ScoreModel = (sequelize, DataTypes) => {
     createdAt: 'createdDate',
     updatedAt: 'updatedDate',
   });
-
-  // Score.associate = (models) => {
-  //   models.Score.belongTo(models.Student, {
-  //     onDelete: 'CASCADE',
-  //     foreignKey: {
-  //       allowNull: false,
-  //     },
-  //     targetKey: 'student_id',
-  //   });
-  // };
 
   return Score;
 };

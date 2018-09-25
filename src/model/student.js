@@ -11,34 +11,79 @@ const StudentModel = (sequelize, DataTypes) => {
       field: 'student_name',
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        len: {
+          args: [0, 250],
+          msg: 'Student Name too long',
+        },
+      },
     },
     admissionDate: {
       field: 'admission_date',
       type: DataTypes.DATE,
+      validate: {
+        isDate: true,
+      },
     },
     dateOfBirth: {
       field: 'date_of_birth',
       type: DataTypes.DATE,
+      validate: {
+        isDate: true,
+      },
     },
     school: {
       field: 'school',
       type: DataTypes.STRING,
+      validate: {
+        len: {
+          args: [0, 250],
+          msg: 'School too long',
+        },
+      },
     },
     parentName: {
       field: 'parent_name',
       type: DataTypes.STRING,
+      validate: {
+        len: {
+          args: [0, 250],
+          msg: 'Parent Name too long',
+        },
+      },
     },
     parentPhone: {
       field: 'parent_phone',
       type: DataTypes.STRING,
+      validate: {
+        len: {
+          args: [0, 250],
+          msg: 'Parent Phone too long',
+        },
+      },
     },
     parentMail: {
       field: 'parent_mail',
       type: DataTypes.STRING,
+      validate: {
+        len: {
+          args: [0, 250],
+          msg: 'Parent Mail too long',
+        },
+        isEmail: {
+          msg: 'Invalid email',
+        },
+      },
     },
     address: {
       field: 'address',
       type: DataTypes.STRING,
+      validate: {
+        len: {
+          args: [0, 250],
+          msg: 'Address too long',
+        },
+      },
     },
     createdBy: {
       field: 'created_by',
@@ -65,14 +110,14 @@ const StudentModel = (sequelize, DataTypes) => {
     tableName: 'student',
     createdAt: 'createdDate',
     updatedAt: 'updatedDate',
-    classMethods: {
-      associate: (models) => {
-        Student.hasMany(models.score, { foreignKey: 'student_id', onDelete: 'CASCADE' });
-        Student.hasMany(models.notification, { foreignKey: 'student_id', onDelete: 'CASCADE' });
-        Student.belongsToMany(models.class, { through: models.class_student });
-      },
-    },
   });
+
+  // Class Method
+  Student.associate = (models) => {
+    Student.hasMany(models.score, { foreignKey: 'student_id', onDelete: 'CASCADE' });
+    Student.hasMany(models.notification, { foreignKey: 'student_id', onDelete: 'CASCADE' });
+    Student.belongsToMany(models.class, { through: models.class_student, foreignKey: 'student_id', onDelete: 'CASCADE' });
+  };
 
   return Student;
 };

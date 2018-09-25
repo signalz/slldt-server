@@ -15,6 +15,10 @@ const UserModel = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
+      len: {
+        args: [0, 250],
+        msg: 'User Name too long',
+      },
     },
     password: {
       field: 'password',
@@ -24,6 +28,10 @@ const UserModel = (sequelize, DataTypes) => {
     name: {
       field: 'name',
       type: DataTypes.STRING,
+      len: {
+        args: [0, 250],
+        msg: 'Name too long',
+      },
     },
     dateOfBirth: {
       field: 'date_of_birth',
@@ -36,6 +44,10 @@ const UserModel = (sequelize, DataTypes) => {
       field: 'mail',
       type: DataTypes.STRING,
       validate: {
+        len: {
+          args: [0, 250],
+          msg: 'Mail too long',
+        },
         isEmail: {
           msg: 'Invalid email',
         },
@@ -44,10 +56,18 @@ const UserModel = (sequelize, DataTypes) => {
     phone: {
       field: 'phone',
       type: DataTypes.STRING,
+      len: {
+        args: [0, 250],
+        msg: 'Phone too long',
+      },
     },
     address: {
       field: 'address',
       type: DataTypes.STRING,
+      len: {
+        args: [0, 250],
+        msg: 'Address too long',
+      },
     },
     createdBy: {
       field: 'created_by',
@@ -76,7 +96,7 @@ const UserModel = (sequelize, DataTypes) => {
   });
   // Class Method
   User.associate = (models) => {
-    User.belongsToMany(models.role, { through: models.user_role });
+    User.belongsToMany(models.role, { through: models.user_role, foreignKey: 'user_id', onDelete: 'CASCADE' });
   };
 
   // Instance Method

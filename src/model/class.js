@@ -11,14 +11,32 @@ const ClassModel = (sequelize, DataTypes) => {
       field: 'class_name',
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        len: {
+          args: [0, 250],
+          msg: 'Class Name too long',
+        },
+      },
     },
     teacherName: {
       field: 'teacher_name',
       type: DataTypes.STRING,
+      validate: {
+        len: {
+          args: [0, 250],
+          msg: 'Teacher Name too long',
+        },
+      },
     },
     teacherPhone: {
       field: 'teacher_phone',
       type: DataTypes.STRING,
+      validate: {
+        len: {
+          args: [0, 250],
+          msg: 'Teacher Phone too long',
+        },
+      },
     },
     createdBy: {
       field: 'created_by',
@@ -44,12 +62,12 @@ const ClassModel = (sequelize, DataTypes) => {
     tableName: 'class',
     createdAt: 'createdDate',
     updatedAt: 'updatedDate',
-    classMethods: {
-      associate: (models) => {
-        Class.belongsToMany(models.student, { through: models.class_student });
-      },
-    },
   });
+
+  // Class Method
+  Class.associate = (models) => {
+    Class.belongsToMany(models.student, { through: models.class_student, foreignKey: 'class_id', onDelete: 'CASCADE' });
+  };
 
   return Class;
 };

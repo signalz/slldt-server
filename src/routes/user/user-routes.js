@@ -37,8 +37,17 @@ const routes = () => {
       res.send('hello world');
     } catch (e) {
       console.log(e);
-      res.send('Cannot create user');
+      res.status(500).send('Cannot create user');
     }
+  });
+
+  router.delete('/', async (req, res) => {
+    await db.user.destroy({
+      where: {
+        userId: req.body.userId,
+      },
+    });
+    res.status(400).send('Deleted');
   });
 
   return router;

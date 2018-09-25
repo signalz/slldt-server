@@ -1,0 +1,11 @@
+drop table if exists "user" cascade;
+drop table if exists "student" cascade;
+drop table if exists "class" cascade;
+drop table if exists "notification" cascade;
+drop table if exists "score" cascade;
+drop table if exists "class_student" cascade;
+drop table if exists "role" cascade;
+drop table if exists "user_role" cascade;
+drop table if exists "role_function" cascade;
+drop table if exists "function" cascade;
+drop table if exists "refresh_token" cascade;

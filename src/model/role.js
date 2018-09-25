@@ -10,6 +10,12 @@ const RoleModel = (sequelize, DataTypes) => {
     roleName: {
       field: 'role_name',
       type: DataTypes.STRING,
+      validate: {
+        len: {
+          args: [0, 250],
+          msg: 'Role Name too long',
+        },
+      },
     },
     createdBy: {
       field: 'created_by',
@@ -35,13 +41,13 @@ const RoleModel = (sequelize, DataTypes) => {
     tableName: 'role',
     createdAt: 'createdDate',
     updatedAt: 'updatedDate',
-    classMethods: {
-      associate: (models) => {
-        Role.belongsToMany(models.user, { through: models.user_role });
-        Role.belongsToMany(models.function, { through: models.role_function });
-      },
-    },
   });
+
+  // Class Method
+  Role.associate = (models) => {
+    Role.belongsToMany(models.user, { through: models.user_role, foreignKey: 'role_id', onDelete: 'CASCADE' });
+    Role.belongsToMany(models.function, { through: models.role_function, foreignKey: 'role_id', onDelete: 'CASCADE' });
+  };
 
   return Role;
 };

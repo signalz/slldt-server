@@ -34,11 +34,11 @@ app.use('/login-with-token',
   routes.authenticationRoutes());
 
 app.use('/users',
-  passport.authenticate('jwt', { session: false }),
+  // passport.authenticate('jwt', { session: false }),
   routes.userRoutes());
 
 app.use('/students',
-  passport.authenticate('jwt', { session: false }),
+  // passport.authenticate('jwt', { session: false }),
   routes.studentRoutes());
 
 db.sequelize.sync().then(() => {
