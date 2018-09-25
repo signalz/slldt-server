@@ -1,4 +1,9 @@
---ROle
+--User
+INSERT INTO public."user"(
+	user_id, user_name, password, name, date_of_birth, mail, phone, address, created_by, created_date, updated_by, updated_date)
+	VALUES (1, 'hieutc', '$2a$10$gyV1hkPk0gBYur0bTXxkaee3.d.CDEDdLfN5SOPUDHAeZOF57IUQa', 'Hieu Trinh', now(), 'hieutrinh54@gmail.com', '0943434', 'Address', 1, now(), 1, now());
+
+--Role
 INSERT INTO public.role(
 	role_id, role_name, created_by, created_date, updated_by, updated_date)
 	VALUES (1, 'ADMIN', 1, now(), 1, now());
