@@ -145,3 +145,9 @@ INSERT INTO public.role_function(
 INSERT INTO public.role_function(
 	role_id, function_id, created_by, created_date, updated_by, updated_date)
 	VALUES (3, 15, 1, now(), 1, now());
+
+
+--User_role
+INSERT INTO public.user_role(
+	role_id, user_id, created_by, created_date, updated_by, updated_date)
+	VALUES (1, 1, 1, now(), 1, now());
