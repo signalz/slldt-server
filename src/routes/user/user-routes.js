@@ -1,5 +1,5 @@
 import express from 'express';
-
+import HttpStatus from 'http-status-codes';
 import db from '../../database';
 
 const routes = () => {
@@ -19,8 +19,6 @@ const routes = () => {
       mail,
       phone,
       address,
-      createdBy,
-      updatedBy,
     } = req.body;
     try {
       await db.user.create({
@@ -31,13 +29,13 @@ const routes = () => {
         mail,
         phone,
         address,
-        createdBy,
-        updatedBy,
+        createdBy: req.user.userId,
+        updatedBy: req.user.userId,
+      }).then((u) => {
+        res.status(HttpStatus.OK).send(u.dataValues);
       });
-      res.send('hello world');
     } catch (e) {
-      console.log(e);
-      res.status(500).send('Cannot create user');
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send('Cannot create user');
     }
   });
 
@@ -47,7 +45,7 @@ const routes = () => {
         userId: req.body.userId,
       },
     });
-    res.status(400).send('Deleted');
+    res.status(HttpStatus.OK).send('Deleted');
   });
 
   return router;
