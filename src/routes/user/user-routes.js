@@ -5,9 +5,24 @@ import db from '../../database';
 const routes = () => {
   const router = express.Router();
   router.get('/', async (req, res) => {
-    const users = await db.user.findAll();
-    users.forEach(user => console.log(user.dataValues.userId));
-    res.send('hello world');
+    // const userNameWhere = req.query.username ? { userName: req.query.username } : {};
+    // const nameWhere = req.query.name ? { name: { $like: `%${req.query.name}%` } } : {};
+    // const mail = req.query.mail ? { mail: { $like: `%${req.query.mail}%` } } : {};
+    try {
+      const users = await db.user.findAll({
+        where: {
+          $or: [
+            { userName: req.query.username },
+            { name: 'Test' },
+            { mail: req.query.mail },
+          ],
+        },
+      });
+      res.status(HttpStatus.OK).send(users);
+    } catch (error) {
+      console.log(error);
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send('Cannot search user');
+    }
   });
 
   router.post('/', async (req, res) => {
@@ -40,6 +55,7 @@ const routes = () => {
   });
 
   router.delete('/', async (req, res) => {
+    console.log(req.body.userId);
     await db.user.destroy({
       where: {
         userId: req.body.userId,
