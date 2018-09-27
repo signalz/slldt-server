@@ -1,20 +1,24 @@
 import express from 'express';
 import HttpStatus from 'http-status-codes';
+import Sequelize from 'sequelize';
 import db from '../../database';
+
+const { Op } = Sequelize;
 
 const routes = () => {
   const router = express.Router();
+
   router.get('/', async (req, res) => {
-    // const userNameWhere = req.query.username ? { userName: req.query.username } : {};
-    // const nameWhere = req.query.name ? { name: { $like: `%${req.query.name}%` } } : {};
-    // const mail = req.query.mail ? { mail: { $like: `%${req.query.mail}%` } } : {};
+    const userNameWhere = req.query.username ? { userName: req.query.username } : {};
+    const nameWhere = req.query.name ? { name: { $like: `%${req.query.name}%` } } : {};
+    const mail = req.query.mail ? { mail: { $like: `%${req.query.mail}%` } } : {};
     try {
       const users = await db.user.findAll({
         where: {
-          $or: [
-            { userName: req.query.username },
-            { name: 'Test' },
-            { mail: req.query.mail },
+          [Op.and]: [
+            userNameWhere,
+            nameWhere,
+            mail,
           ],
         },
       });
