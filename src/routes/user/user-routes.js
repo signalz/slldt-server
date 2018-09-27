@@ -26,11 +26,12 @@ const routes = () => {
 
     try {
       const users = await db.user.findAll({
+        attributes: { exclude: ['password'] },
         where: {
           [Op.and]: query,
         },
       });
-      res.status(HttpStatus.OK).send(users.dataValues);
+      res.status(HttpStatus.OK).send(users);
     } catch (error) {
       console.log(error);
       res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({ message: 'Cannot search user' });
@@ -59,7 +60,35 @@ const routes = () => {
         createdBy: req.user.userId,
         updatedBy: req.user.userId,
       });
-      res.status(HttpStatus.OK).send(userData.dataValues);
+      res.status(HttpStatus.OK).send(userData);
+    } catch (e) {
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({ message: 'Cannot create user' });
+    }
+  });
+
+  router.patch('/', async (req, res) => {
+    const {
+      password,
+      name,
+      username,
+      dateOfBirth,
+      mail,
+      phone,
+      address,
+    } = req.body;
+    try {
+      const userData = await db.user.create({
+        userName: username,
+        password,
+        name,
+        dateOfBirth,
+        mail,
+        phone,
+        address,
+        createdBy: req.user.userId,
+        updatedBy: req.user.userId,
+      });
+      res.status(HttpStatus.OK).send(userData);
     } catch (e) {
       res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({ message: 'Cannot create user' });
     }
