@@ -13,6 +13,11 @@ passport.use(new Strategy(async (username, password, done) => {
   try {
     const user = await db.user.findOne({
       where: { userName: username },
+      include: [{
+        model: db.role,
+        attributes: ['role_id', 'role_name'],
+      },
+      ],
     });
     // user existed
     if (user.dataValues) {

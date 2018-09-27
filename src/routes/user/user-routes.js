@@ -66,7 +66,7 @@ const routes = () => {
     }
   });
 
-  router.patch('/', async (req, res) => {
+  router.patch('/:id', async (req, res) => {
     const {
       password,
       name,
@@ -76,21 +76,48 @@ const routes = () => {
       phone,
       address,
     } = req.body;
+
+    const { id } = req.params;
+    const attributes = {};
+    // build query
+    if (username) {
+      attributes.userName = req.body.username;
+    }
+
+    if (password) {
+      attributes.password = req.body.password;
+    }
+
+    if (name) {
+      attributes.name = req.body.name;
+    }
+
+    if (dateOfBirth) {
+      attributes.dateOfBirth = req.body.dateOfBirth;
+    }
+
+    if (mail) {
+      attributes.mail = req.body.mail;
+    }
+
+    if (phone) {
+      attributes.phone = req.body.phone;
+    }
+
+    if (address) {
+      attributes.address = req.body.address;
+    }
+
     try {
-      const userData = await db.user.create({
-        userName: username,
-        password,
-        name,
-        dateOfBirth,
-        mail,
-        phone,
-        address,
-        createdBy: req.user.userId,
-        updatedBy: req.user.userId,
-      });
-      res.status(HttpStatus.OK).send(userData);
+      const user = await db.user.findById(id);
+      if (user) {
+        user.update(attributes).then((result) => {
+          res.status(HttpStatus.OK).send(result);
+        });
+      }
     } catch (e) {
-      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({ message: 'Cannot create user' });
+      console.log(e);
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({ message: 'Cannot update user' });
     }
   });
 
