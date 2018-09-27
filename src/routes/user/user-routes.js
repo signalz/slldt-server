@@ -9,23 +9,31 @@ const routes = () => {
   const router = express.Router();
 
   router.get('/', async (req, res) => {
-    const userNameWhere = req.query.username ? { userName: req.query.username } : {};
-    const nameWhere = req.query.name ? { name: { $like: `%${req.query.name}%` } } : {};
-    const mail = req.query.mail ? { mail: { $like: `%${req.query.mail}%` } } : {};
+    const { username, name, mail } = req.query;
+    const query = [];
+    // build query
+    if (username) {
+      query.push({ userName: req.query.username });
+    }
+
+    if (name) {
+      query.push({ name: { $like: `%${req.query.name}%` } });
+    }
+
+    if (mail) {
+      query.push({ mail: { $like: `%${req.query.mail}%` } });
+    }
+
     try {
       const users = await db.user.findAll({
         where: {
-          [Op.and]: [
-            userNameWhere,
-            nameWhere,
-            mail,
-          ],
+          [Op.and]: query,
         },
       });
-      res.status(HttpStatus.OK).send(users);
+      res.status(HttpStatus.OK).send(users.dataValues);
     } catch (error) {
       console.log(error);
-      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send('Cannot search user');
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({ message: 'Cannot search user' });
     }
   });
 
@@ -40,7 +48,7 @@ const routes = () => {
       address,
     } = req.body;
     try {
-      await db.user.create({
+      const userData = await db.user.create({
         userName: username,
         password,
         name,
@@ -50,22 +58,25 @@ const routes = () => {
         address,
         createdBy: req.user.userId,
         updatedBy: req.user.userId,
-      }).then((u) => {
-        res.status(HttpStatus.OK).send(u.dataValues);
       });
+      res.status(HttpStatus.OK).send(userData.dataValues);
     } catch (e) {
-      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send('Cannot create user');
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({ message: 'Cannot create user' });
     }
   });
 
-  router.delete('/', async (req, res) => {
-    console.log(req.body.userId);
-    await db.user.destroy({
-      where: {
-        userId: req.body.userId,
-      },
-    });
-    res.status(HttpStatus.OK).send('Deleted');
+  router.delete('/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+      await db.user.destroy({
+        where: {
+          userId: id,
+        },
+      });
+      res.status(HttpStatus.OK).send('Deleted');
+    } catch (e) {
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({ message: 'Cannot delete user' });
+    }
   });
 
   return router;
