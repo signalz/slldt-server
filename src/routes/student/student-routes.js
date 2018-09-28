@@ -68,8 +68,8 @@ const routes = () => {
       parentPhone: req.body.parentPhone,
       parentMail: req.body.parentMail,
       address: req.body.address,
-      createdBy: 1,
-      updatedBy: 1,
+      createdBy: req.user.userId,
+      updatedBy: req.user.userId,
     }).then((student) => {
       req.body.scores.forEach((e) => {
         db.score.create({
@@ -77,8 +77,8 @@ const routes = () => {
           month: e.month,
           score: e.score,
           link: e.link,
-          createdBy: 1,
-          updatedBy: 1,
+          createdBy: req.user.userId,
+          updatedBy: req.user.userId,
         });
       });
     });
