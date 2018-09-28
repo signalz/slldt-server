@@ -17,13 +17,13 @@ const routes = () => {
     }
 
     if (name) {
-      query.push({ name: { $like: `%${req.query.name}%` } });
+      query.push({ name: { [Op.like]: `%${req.query.name}%` } });
     }
 
     if (mail) {
-      query.push({ mail: { $like: `%${req.query.mail}%` } });
+      query.push({ mail: { [Op.like]: `%${req.query.mail}%` } });
     }
-
+    console.log(query);
     try {
       const users = await db.user.findAll({
         attributes: { exclude: ['password'] },
@@ -31,7 +31,7 @@ const routes = () => {
           [Op.and]: query,
         },
       });
-      res.status(HttpStatus.OK).send(users);
+      res.status(HttpStatus.OK).send({ data: users });
     } catch (error) {
       console.log(error);
       res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({ message: 'Cannot search user' });
@@ -60,7 +60,7 @@ const routes = () => {
         createdBy: req.user.userId,
         updatedBy: req.user.userId,
       });
-      res.status(HttpStatus.OK).send(userData);
+      res.status(HttpStatus.OK).send({ data: userData });
     } catch (e) {
       res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({ message: 'Cannot create user' });
     }
@@ -112,7 +112,7 @@ const routes = () => {
       const user = await db.user.findById(id);
       if (user) {
         user.update(attributes).then((result) => {
-          res.status(HttpStatus.OK).send(result);
+          res.status(HttpStatus.OK).send({ data: result });
         });
       }
     } catch (e) {
@@ -129,7 +129,7 @@ const routes = () => {
           userId: id,
         },
       });
-      res.status(HttpStatus.OK).send('Deleted');
+      res.status(HttpStatus.OK).send({ message: 'Deleted' });
     } catch (e) {
       res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({ message: 'Cannot delete user' });
     }

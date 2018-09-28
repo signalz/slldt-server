@@ -96,7 +96,9 @@ const UserModel = (sequelize, DataTypes) => {
   });
   // Class Method
   User.associate = (models) => {
-    User.belongsToMany(models.role, { through: models.user_role, foreignKey: 'user_id', onDelete: 'CASCADE' });
+    User.belongsToMany(models.role, {
+      as: 'roles', through: models.user_role, foreignKey: 'user_id', onDelete: 'CASCADE',
+    });
   };
 
   // Instance Method

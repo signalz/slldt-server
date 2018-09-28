@@ -1,11 +1,61 @@
 import express from 'express';
+import HttpStatus from 'http-status-codes';
+import Sequelize from 'sequelize';
 import db from '../../database';
+
+const { Op } = Sequelize;
 
 const routes = () => {
   const router = express.Router();
 
   router.get('/', async (req, res) => {
-    res.send('hello world');
+    const {
+      studentName, className, dateOfBirth, fromAdmissionDate, toAdmissionDate,
+    } = req.query;
+    const query = [];
+    const subQuery = [];
+    // build query
+    if (dateOfBirth) {
+      query.push({ dateOfBirth: req.query.dateOfBirth });
+    }
+
+    if (studentName) {
+      query.push({ studentName: { [Op.like]: `%${req.query.studentName}%` } });
+    }
+
+    if (fromAdmissionDate) {
+      query.push({ admissionDate: { [Op.gte]: req.query.fromAdmissionDate } });
+    }
+
+    if (toAdmissionDate) {
+      query.push({ admissionDate: { [Op.lte]: req.query.fromAdmissionDate } });
+    }
+
+    if (className) {
+      subQuery.push({ class_name: { [Op.like]: `%${req.query.className}%` } });
+    }
+    console.log(query);
+    try {
+      await db.student.findAndCountAll({
+        include: [{
+          model: db.class,
+          as: 'classes',
+          attributes: [['class_id', 'classId'], ['class_name', 'className']],
+          through: {
+            attributes: ['class_id'],
+          },
+          where: subQuery,
+        }],
+        where: {
+          [Op.and]: query,
+        },
+      }).then((result) => {
+        res.status(HttpStatus.OK).send({ count: result.count, data: result.rows });
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({ message: 'Cannot search student' });
+    }
   });
 
   router.post('/', async (req, res) => {

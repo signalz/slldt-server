@@ -66,7 +66,9 @@ const ClassModel = (sequelize, DataTypes) => {
 
   // Class Method
   Class.associate = (models) => {
-    Class.belongsToMany(models.student, { through: models.class_student, foreignKey: 'class_id', onDelete: 'CASCADE' });
+    Class.belongsToMany(models.student, {
+      as: 'students', through: models.class_student, foreignKey: 'class_id', onDelete: 'CASCADE',
+    });
   };
 
   return Class;

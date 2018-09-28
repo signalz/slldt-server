@@ -15,7 +15,11 @@ passport.use(new Strategy(async (username, password, done) => {
       where: { userName: username },
       include: [{
         model: db.role,
-        attributes: ['role_id', 'role_name'],
+        as: 'roles',
+        attributes: [['role_id', 'roleId'], ['role_name', 'roleName']],
+        through: {
+          attributes: ['role_id'],
+        },
       },
       ],
     });

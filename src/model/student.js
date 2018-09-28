@@ -20,14 +20,14 @@ const StudentModel = (sequelize, DataTypes) => {
     },
     admissionDate: {
       field: 'admission_date',
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       validate: {
         isDate: true,
       },
     },
     dateOfBirth: {
       field: 'date_of_birth',
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       validate: {
         isDate: true,
       },
@@ -114,9 +114,11 @@ const StudentModel = (sequelize, DataTypes) => {
 
   // Class Method
   Student.associate = (models) => {
-    Student.hasMany(models.score, { foreignKey: 'student_id', onDelete: 'CASCADE' });
-    Student.hasMany(models.notification, { foreignKey: 'student_id', onDelete: 'CASCADE' });
-    Student.belongsToMany(models.class, { through: models.class_student, foreignKey: 'student_id', onDelete: 'CASCADE' });
+    Student.hasMany(models.score, { as: 'scores', foreignKey: 'student_id', onDelete: 'CASCADE' });
+    Student.hasMany(models.notification, { as: 'notifications', foreignKey: 'student_id', onDelete: 'CASCADE' });
+    Student.belongsToMany(models.class, {
+      as: 'classes', through: models.class_student, foreignKey: 'student_id', onDelete: 'CASCADE',
+    });
   };
 
   return Student;
