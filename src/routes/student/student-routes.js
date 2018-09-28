@@ -16,7 +16,8 @@ const routes = () => {
     const subQuery = [];
     // build query
     if (dateOfBirth) {
-      query.push({ dateOfBirth: req.query.dateOfBirth });
+      query.push(Sequelize.literal(`extract(YEAR FROM "Student"."date_of_birth") = ${dateOfBirth}`));
+      // Sequelize.literal('extract(YEAR FROM "Student"."date_of_birth") = 2018')
     }
 
     if (studentName) {
@@ -46,7 +47,9 @@ const routes = () => {
           },
           where: subQuery,
         }],
-        where: {
+        where:
+        // Sequelize.literal('extract(YEAR FROM "Student"."date_of_birth") = 2018'),
+        {
           [Op.and]: query,
         },
       }).then((result) => {
