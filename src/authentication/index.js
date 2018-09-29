@@ -1,6 +1,7 @@
-import passport, { generateToken } from './auth';
+import passport, { generateToken, authorize } from './auth';
 
 export default {
   passport,
   generateToken,
+  authorize,
 };

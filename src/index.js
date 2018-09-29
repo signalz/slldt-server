@@ -9,7 +9,7 @@ import db from './database';
 import authentication from './authentication';
 
 const app = express();
-const { passport, generateToken } = authentication;
+const { passport, generateToken, authorize } = authentication;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -38,11 +38,21 @@ app.use(
   routes.authenticationRoutes(),
 );
 
-app.use('/users', passport.authenticate('jwt', { session: false }), routes.userRoutes());
+app.use(
+  '/classes',
+  passport.authenticate('jwt', { session: false }),
+  authorize,
+  routes.classRoutes(),
+);
 
-app.use('/students', passport.authenticate('jwt', { session: false }), routes.studentRoutes());
+app.use('/users', passport.authenticate('jwt', { session: false }), authorize, routes.userRoutes());
 
-app.use('/classes', passport.authenticate('jwt', { session: false }), routes.classRoutes());
+app.use(
+  '/students',
+  passport.authenticate('jwt', { session: false }),
+  authorize,
+  routes.studentRoutes(),
+);
 
 db.sequelize
   .sync()
