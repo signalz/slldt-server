@@ -1,20 +1,22 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import logger from 'morgan';
+import morgan from 'morgan';
 // import createError from 'http-errors';
 import cors from 'cors';
 
 import routes from './routes';
 import db from './database';
-import authentication from './authentication';
+import middleware from './middleware';
+import logger from './utils/logger';
 
 const app = express();
-const { passport, generateToken, authorize } = authentication;
+const { passport, generateToken } = middleware.authentication;
+const { authorize } = middleware.authorization;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
-app.use(logger('dev'));
+app.use(morgan('dev'));
 app.use(passport.initialize());
 // app.use((req, res, next) => {
 //   // console.log(req, res);
@@ -44,5 +46,5 @@ app.use('/students',
   routes.studentRoutes());
 
 db.sequelize.sync().then(() => {
-  app.listen(5000, () => console.log('Example app listening on port 5000!'));
-}).catch(err => console.log('Cannot connect to databse', err));
+  app.listen(5000, () => logger.info('Example app listening on port 5000!'));
+}).catch(err => logger.error('Cannot connect to database', err));
