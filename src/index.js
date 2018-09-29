@@ -22,25 +22,31 @@ app.use(passport.initialize());
 // });
 
 // login
-app.use('/login', passport.authenticate(
-  'local', {
+app.use(
+  '/login',
+  passport.authenticate('local', {
     session: false,
-  },
-), generateToken, routes.authenticationRoutes());
+  }),
+  generateToken,
+  routes.authenticationRoutes(),
+);
 // auto login with token
-app.use('/login-with-token',
+app.use(
+  '/login-with-token',
   passport.authenticate('jwt', { session: false, ignoreExpiration: true }),
   generateToken,
-  routes.authenticationRoutes());
+  routes.authenticationRoutes(),
+);
 
-app.use('/users',
-  passport.authenticate('jwt', { session: false }),
-  routes.userRoutes());
+app.use('/users', passport.authenticate('jwt', { session: false }), routes.userRoutes());
 
-app.use('/students',
-  passport.authenticate('jwt', { session: false }),
-  routes.studentRoutes());
+app.use('/students', passport.authenticate('jwt', { session: false }), routes.studentRoutes());
 
-db.sequelize.sync().then(() => {
-  app.listen(5000, () => console.log('Example app listening on port 5000!'));
-}).catch(err => console.log('Cannot connect to databse', err));
+app.use('/classes', passport.authenticate('jwt', { session: false }), routes.classRoutes());
+
+db.sequelize
+  .sync()
+  .then(() => {
+    app.listen(5000, () => console.log('Example app listening on port 5000!'));
+  })
+  .catch(err => console.log('Cannot connect to databse', err));
