@@ -1,15 +1,20 @@
 const ScoreModel = (sequelize, DataTypes) => {
   const Score = sequelize.define('Score', {
+    scoreId: {
+      field: 'score_id',
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      allowNull: false,
+      autoIncrement: true,
+    },
     studentId: {
       field: 'student_id',
       type: DataTypes.INTEGER,
-      primaryKey: true,
       allowNull: false,
     },
     month: {
       field: 'month',
-      type: DataTypes.INTEGER,
-      primaryKey: true,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     score: {
@@ -58,6 +63,13 @@ const ScoreModel = (sequelize, DataTypes) => {
     createdAt: 'createdDate',
     updatedAt: 'updatedDate',
   });
+
+  // Class Method
+  Score.associate = (models) => {
+    Score.belongsTo(models.student, {
+      as: 'student', through: models.student, foreignKey: 'student_id',
+    });
+  };
 
   return Score;
 };

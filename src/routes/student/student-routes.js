@@ -17,7 +17,6 @@ const routes = () => {
     // build query
     if (dateOfBirth) {
       query.push(Sequelize.literal(`extract(YEAR FROM "Student"."date_of_birth") = ${dateOfBirth}`));
-      // Sequelize.literal('extract(YEAR FROM "Student"."date_of_birth") = 2018')
     }
 
     if (studentName) {
@@ -35,7 +34,6 @@ const routes = () => {
     if (className) {
       subQuery.push({ class_name: { [Op.like]: `%${req.query.className}%` } });
     }
-    console.log(query);
     try {
       await db.student.findAndCountAll({
         include: [{
@@ -47,9 +45,7 @@ const routes = () => {
           },
           where: subQuery,
         }],
-        where:
-        // Sequelize.literal('extract(YEAR FROM "Student"."date_of_birth") = 2018'),
-        {
+        where: {
           [Op.and]: query,
         },
       }).then((result) => {
@@ -62,46 +58,121 @@ const routes = () => {
   });
 
   router.post('/', async (req, res) => {
-    db.student.create({
-      studentName: req.body.studentName,
-      admissionDate: req.body.admissionDate,
-      dateOfBirth: req.body.dateOfBirth,
-      school: req.body.school,
-      parentName: req.body.parentName,
-      parentPhone: req.body.parentPhone,
-      parentMail: req.body.parentMail,
-      address: req.body.address,
-      createdBy: req.user.userId,
-      updatedBy: req.user.userId,
-    }).then((student) => {
-      req.body.scores.forEach((e) => {
-        db.score.create({
-          studentId: student.studentId,
-          month: e.month,
-          score: e.score,
-          link: e.link,
-          createdBy: req.user.userId,
-          updatedBy: req.user.userId,
-        });
+    const scoresArr = [];
+    req.body.scores.forEach((e) => {
+      scoresArr.push({
+        month: e.month,
+        score: e.score,
+        link: e.link,
+        createdBy: req.user.userId,
+        updatedBy: req.user.userId,
       });
     });
 
-    res.send('hello world');
+    db.sequelize.transaction(t => db.student.create({ studentName: 'Test', createdBy: req.user.userId, updatedBy: req.user.userId },
+      { transaction: t }).then(student => student.setScores([
+      { studentId: student.studentId, createdBy: req.user.userId, updatedBy: req.user.userId },
+      { studentId: student.studentId, createdBy: req.user.userId, updatedBy: req.user.userId }],
+    { transaction: t }).then(() => {
+      res.status(HttpStatus.OK);
+    })));
+
+    db.sequelize.transaction((t) => {
+      db.student.create({
+        studentName: req.body.studentName,
+        admissionDate: req.body.admissionDate,
+        dateOfBirth: req.body.dateOfBirth,
+        school: req.body.school,
+        parentName: req.body.parentName,
+        parentPhone: req.body.parentPhone,
+        parentMail: req.body.parentMail,
+        address: req.body.address,
+        createdBy: req.user.userId,
+        updatedBy: req.user.userId,
+        scores: scoresArr,
+      }, {
+        include: [{
+          model: db.score,
+          as: 'scores',
+          t,
+        }],
+      });
+    });
+
+
+    // db.sequelize.transaction((t) => {
+    //   return db.student.create({
+    //     studentName: req.body.studentName,
+    //     admissionDate: req.body.admissionDate,
+    //     dateOfBirth: req.body.dateOfBirth,
+    //     school: req.body.school,
+    //     parentName: req.body.parentName,
+    //     parentPhone: req.body.parentPhone,
+    //     parentMail: req.body.parentMail,
+    //     address: req.body.address,
+    //     createdBy: req.user.userId,
+    //     updatedBy: req.user.userId,
+    //   }, { transaction: t }).then((student) => {
+    //     return student.setScores([{month: '1', score: '1'}], { transaction: t });
+    //   }).then((result) => {
+    //     res.status(HttpStatus.OK).send({ data: result });
+    //   }).catch((err) => {
+    //     console.log(err);
+    //   });
+    // });
   });
+
+  // router.post('/', (req, res) => {
+  //   db.sequelize.transaction((t) => {
+  //     return db.student.create({
+  //       studentName: req.body.studentName,
+  //       admissionDate: req.body.admissionDate,
+  //       dateOfBirth: req.body.dateOfBirth,
+  //       school: req.body.school,
+  //       parentName: req.body.parentName,
+  //       parentPhone: req.body.parentPhone,
+  //       parentMail: req.body.parentMail,
+  //       address: req.body.address,
+  //       createdBy: req.user.userId,
+  //       updatedBy: req.user.userId,
+  //     }, { transaction: t }).then((student) => {
+  //       // return Promise.all(
+  //       Promise.all(req.body.scores.map(score => {
+  //         return db.score.create({
+  //           studentId: student.studentId,
+  //           month: score.month,
+  //           score: score.score,
+  //           link: score.link,
+  //           createdBy: req.user.userId,
+  //           updatedBy: req.user.userId,
+  //         }, { transaction: t });
+  //       })).then(() => {
+  //         console.log("Test");
+  //       })
+  //       // );
+  //     });
+  //   }).then((result) => {
+  //     res.status(HttpStatus.OK).send({ data: result });
+  //   }).catch((err) => {
+  //     console.log(err);
+  //     res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({ message: 'Cannot create student' });
+  //   });
+  // });
 
   router.delete('/', async (req, res) => {
-    await db.student.destroy({
-      where: {
-        studentId: req.body.studentId,
-      },
-    });
-    res.status(400).send('Deleted');
+    const { id } = req.params;
+    try {
+      await db.student.destroy({
+        where: {
+          studentId: id,
+        },
+      });
+      res.status(200).send({ message: 'Deleted' });
+    } catch (error) {
+      console.log(error);
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({ message: 'Cannot delete student' });
+    }
   });
-
-  // router.post('/', async (req, res) => {
-  //   console.log(req.body);
-  //   res.send('hello world');
-  // });
 
   return router;
 };

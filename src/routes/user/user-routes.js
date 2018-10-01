@@ -23,7 +23,6 @@ const routes = () => {
     if (mail) {
       query.push({ mail: { [Op.like]: `%${req.query.mail}%` } });
     }
-    console.log(query);
     try {
       const users = await db.user.findAll({
         attributes: { exclude: ['password'] },
