@@ -67,7 +67,7 @@ const ScoreModel = (sequelize, DataTypes) => {
   // Class Method
   Score.associate = (models) => {
     Score.belongsTo(models.student, {
-      as: 'student', through: models.student, foreignKey: 'student_id',
+      as: 'student', through: models.student, foreignKey: 'student_id', constraints: false,
     });
   };
 
