@@ -52,7 +52,7 @@ app.use('/users', passport.authenticate('jwt', { session: false }), authorize, r
 app.use(
   '/students',
   passport.authenticate('jwt', { session: false }),
-  authorize,
+  // authorize,
   routes.studentRoutes(),
 );
 

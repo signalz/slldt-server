@@ -114,7 +114,9 @@ const StudentModel = (sequelize, DataTypes) => {
 
   // Class Method
   Student.associate = (models) => {
-    Student.hasMany(models.score, { as: 'scores', foreignKey: 'student_id', onDelete: 'CASCADE' });
+    Student.hasMany(models.score, {
+      as: 'scores', foreignKey: 'student_id', onDelete: 'CASCADE', constraints: false,
+    });
     Student.hasMany(models.notification, { as: 'notifications', foreignKey: 'student_id', onDelete: 'CASCADE' });
     Student.belongsToMany(models.class, {
       as: 'classes', through: models.class_student, foreignKey: 'student_id', onDelete: 'CASCADE',
