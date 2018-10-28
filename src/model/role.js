@@ -1,14 +1,13 @@
 const RoleModel = (sequelize, DataTypes) => {
   const Role = sequelize.define('Role', {
-    roleId: {
-      field: 'role_id',
-      type: DataTypes.INTEGER,
+    id: {
+      field: 'id',
+      type: DataTypes.STRING,
       primaryKey: true,
       allowNull: false,
-      autoIncrement: true,
     },
-    roleName: {
-      field: 'role_name',
+    name: {
+      field: 'name',
       type: DataTypes.STRING,
       validate: {
         len: {
@@ -19,7 +18,7 @@ const RoleModel = (sequelize, DataTypes) => {
     },
     createdBy: {
       field: 'created_by',
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     createdDate: {
@@ -29,7 +28,7 @@ const RoleModel = (sequelize, DataTypes) => {
     },
     updatedBy: {
       field: 'updated_by',
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     updatedDate: {

@@ -2,7 +2,7 @@ const ScoreModel = (sequelize, DataTypes) => {
   const Score = sequelize.define('Score', {
     studentId: {
       field: 'student_id',
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       primaryKey: true,
       allowNull: false,
     },
@@ -35,7 +35,7 @@ const ScoreModel = (sequelize, DataTypes) => {
     },
     createdBy: {
       field: 'created_by',
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     createdDate: {
@@ -45,7 +45,7 @@ const ScoreModel = (sequelize, DataTypes) => {
     },
     updatedBy: {
       field: 'updated_by',
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     updatedDate: {

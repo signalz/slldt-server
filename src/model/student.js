@@ -1,14 +1,13 @@
 const StudentModel = (sequelize, DataTypes) => {
   const Student = sequelize.define('Student', {
-    studentId: {
-      field: 'student_id',
-      type: DataTypes.INTEGER,
+    id: {
+      field: 'id',
+      type: DataTypes.STRING,
       primaryKey: true,
       allowNull: false,
-      autoIncrement: true,
     },
-    studentName: {
-      field: 'student_name',
+    name: {
+      field: 'name',
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
@@ -87,7 +86,7 @@ const StudentModel = (sequelize, DataTypes) => {
     },
     createdBy: {
       field: 'created_by',
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     createdDate: {
@@ -97,7 +96,7 @@ const StudentModel = (sequelize, DataTypes) => {
     },
     updatedBy: {
       field: 'updated_by',
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     updatedDate: {

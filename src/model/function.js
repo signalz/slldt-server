@@ -1,14 +1,13 @@
 const FunctionModel = (sequelize, DataTypes) => {
   const Function = sequelize.define('Function', {
-    functionId: {
-      field: 'function_id',
-      type: DataTypes.INTEGER,
+    id: {
+      field: 'id',
+      type: DataTypes.STRING,
       primaryKey: true,
       allowNull: false,
-      autoIncrement: true,
     },
-    functionName: {
-      field: 'function_name',
+    name: {
+      field: 'name',
       type: DataTypes.STRING,
       validate: {
         len: {
@@ -39,7 +38,7 @@ const FunctionModel = (sequelize, DataTypes) => {
     },
     createdBy: {
       field: 'created_by',
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     createdDate: {
@@ -49,7 +48,7 @@ const FunctionModel = (sequelize, DataTypes) => {
     },
     updatedBy: {
       field: 'updated_by',
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     updatedDate: {

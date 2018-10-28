@@ -1,16 +1,15 @@
 const NotificationModel = (sequelize, DataTypes) => {
   const Notification = sequelize.define('Notification', {
-    notifyId: {
-      field: 'notify_id',
-      type: DataTypes.INTEGER,
+    id: {
+      field: 'id',
+      type: DataTypes.STRING,
       primaryKey: true,
       allowNull: false,
       autoIncrement: true,
     },
     studentId: {
       field: 'student_id',
-      type: DataTypes.INTEGER,
-      primaryKey: true,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     content: {
@@ -20,7 +19,7 @@ const NotificationModel = (sequelize, DataTypes) => {
     },
     createdBy: {
       field: 'created_by',
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     createdDate: {
@@ -30,7 +29,7 @@ const NotificationModel = (sequelize, DataTypes) => {
     },
     updatedBy: {
       field: 'updated_by',
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     updatedDate: {
