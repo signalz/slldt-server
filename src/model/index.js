@@ -9,17 +9,19 @@ import FunctionModel from './function';
 import UserRoleModel from './user-role';
 import RoleFunctionModel from './role-function';
 import RefreshTokenModel from './refresh-token';
+import ParentInfoModel from './parent-info';
 
 export default {
   student: StudentModel,
   class: ClassModel,
   notification: NotificationModel,
   score: ScoreModel,
-  class_student: ClassStudentModel,
+  classStudent: ClassStudentModel,
   user: UserModel,
   role: RoleModel,
   function: FunctionModel,
-  user_role: UserRoleModel,
-  role_function: RoleFunctionModel,
-  refresh_token: RefreshTokenModel,
+  userRole: UserRoleModel,
+  roleFunction: RoleFunctionModel,
+  refreshToken: RefreshTokenModel,
+  parentInfo: ParentInfoModel,
 };

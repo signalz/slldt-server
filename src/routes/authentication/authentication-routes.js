@@ -8,7 +8,7 @@ const sendResponse = async (req, res) => {
   const refreshToken = `${req.user.userId.toString()}.${crypto.randomBytes(40).toString('hex')}`;
   // TODO: save refresh token to db
   const { user } = req;
-  await db.refresh_token.create({
+  await db.refreshToken.create({
     token: refreshToken,
     expiresAt: moment().add(2, 'week').toISOString(),
     userId: user.userId,
@@ -30,12 +30,12 @@ const routes = () => {
     // too many if =============
     if (req.authInfo.isExp) {
       if (req.body.refreshToken) {
-        const refreshToken = await db.refresh_token.findOne({
+        const refreshToken = await db.refreshToken.findOne({
           where: { token: req.body.refreshToken },
         });
         if (refreshToken.dataValues) {
           // refresh token existed => delete
-          await db.refresh_token.destroy({
+          await db.refreshToken.destroy({
             where: { token: req.body.refreshToken },
           });
           // is refresh token expired ?

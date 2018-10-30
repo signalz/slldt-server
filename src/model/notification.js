@@ -5,7 +5,6 @@ const NotificationModel = (sequelize, DataTypes) => {
       type: DataTypes.UUID,
       primaryKey: true,
       allowNull: false,
-      autoIncrement: true,
     },
     studentId: {
       field: 'student_id',

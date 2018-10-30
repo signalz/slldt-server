@@ -1,40 +1,47 @@
-const ScoreModel = (sequelize, DataTypes) => {
-  const Score = sequelize.define('Score', {
+const ParentInfoModel = (sequelize, DataTypes) => {
+  const ParentInfo = sequelize.define('ParentInfo', {
     id: {
       field: 'id',
       type: DataTypes.UUID,
       primaryKey: true,
       allowNull: false,
     },
-    studentId: {
+    student_id: {
       field: 'student_id',
       type: DataTypes.UUID,
       allowNull: false,
     },
-    month: {
-      field: 'month',
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      allowNull: false,
-    },
-    score: {
-      field: 'score',
+    name: {
+      field: 'name',
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
         len: {
           args: [0, 250],
-          msg: 'Score too long',
+          msg: 'Parent Name too long',
         },
       },
     },
-    link: {
-      field: 'link',
+    phoneNumber: {
+      field: 'phone_number',
       type: DataTypes.STRING,
       validate: {
         len: {
           args: [0, 250],
-          msg: 'Link too long',
+          msg: 'Phone number too long',
+        },
+      },
+    },
+    mail: {
+      field: 'mail',
+      type: DataTypes.STRING,
+      validate: {
+        len: {
+          args: [0, 250],
+          msg: 'Mail too long',
+        },
+        isEmail: {
+          msg: 'Invalid email',
         },
       },
     },
@@ -59,12 +66,12 @@ const ScoreModel = (sequelize, DataTypes) => {
       allowNull: false,
     },
   }, {
-    tableName: 'score',
+    tableName: 'parent_info',
     createdAt: 'createdDate',
     updatedAt: 'updatedDate',
   });
 
-  return Score;
+  return ParentInfo;
 };
 
-export default ScoreModel;
+export default ParentInfoModel;

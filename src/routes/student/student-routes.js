@@ -35,7 +35,6 @@ const routes = () => {
     if (className) {
       subQuery.push({ class_name: { [Op.like]: `%${req.query.className}%` } });
     }
-    console.log(query);
     try {
       await db.student.findAndCountAll({
         include: [{

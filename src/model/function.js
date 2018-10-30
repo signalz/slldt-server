@@ -65,7 +65,7 @@ const FunctionModel = (sequelize, DataTypes) => {
   // Class method
   Function.associate = (models) => {
     Function.belongsToMany(models.role, {
-      as: 'roles', through: models.role_function, foreignKey: 'function_id', onDelete: 'CASCADE',
+      as: 'roles', through: models.roleFunction, foreignKey: 'function_id', onDelete: 'CASCADE',
     });
   };
 
