@@ -2,7 +2,7 @@ const FunctionModel = (sequelize, DataTypes) => {
   const Function = sequelize.define('Function', {
     id: {
       field: 'id',
-      type: DataTypes.STRING,
+      type: DataTypes.UUID,
       primaryKey: true,
       allowNull: false,
     },
@@ -38,7 +38,7 @@ const FunctionModel = (sequelize, DataTypes) => {
     },
     createdBy: {
       field: 'created_by',
-      type: DataTypes.STRING,
+      type: DataTypes.UUID,
       allowNull: false,
     },
     createdDate: {
@@ -48,7 +48,7 @@ const FunctionModel = (sequelize, DataTypes) => {
     },
     updatedBy: {
       field: 'updated_by',
-      type: DataTypes.STRING,
+      type: DataTypes.UUID,
       allowNull: false,
     },
     updatedDate: {

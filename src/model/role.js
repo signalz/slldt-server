@@ -2,7 +2,7 @@ const RoleModel = (sequelize, DataTypes) => {
   const Role = sequelize.define('Role', {
     id: {
       field: 'id',
-      type: DataTypes.STRING,
+      type: DataTypes.UUID,
       primaryKey: true,
       allowNull: false,
     },
@@ -18,7 +18,7 @@ const RoleModel = (sequelize, DataTypes) => {
     },
     createdBy: {
       field: 'created_by',
-      type: DataTypes.STRING,
+      type: DataTypes.UUID,
       allowNull: false,
     },
     createdDate: {
@@ -28,7 +28,7 @@ const RoleModel = (sequelize, DataTypes) => {
     },
     updatedBy: {
       field: 'updated_by',
-      type: DataTypes.STRING,
+      type: DataTypes.UUID,
       allowNull: false,
     },
     updatedDate: {

@@ -2,7 +2,7 @@ const StudentModel = (sequelize, DataTypes) => {
   const Student = sequelize.define('Student', {
     id: {
       field: 'id',
-      type: DataTypes.STRING,
+      type: DataTypes.UUID,
       primaryKey: true,
       allowNull: false,
     },
@@ -86,7 +86,7 @@ const StudentModel = (sequelize, DataTypes) => {
     },
     createdBy: {
       field: 'created_by',
-      type: DataTypes.STRING,
+      type: DataTypes.UUID,
       allowNull: false,
     },
     createdDate: {
@@ -96,7 +96,7 @@ const StudentModel = (sequelize, DataTypes) => {
     },
     updatedBy: {
       field: 'updated_by',
-      type: DataTypes.STRING,
+      type: DataTypes.UUID,
       allowNull: false,
     },
     updatedDate: {
