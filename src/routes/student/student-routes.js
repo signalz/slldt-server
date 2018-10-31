@@ -1,5 +1,6 @@
 import express from 'express';
 import HttpStatus from 'http-status-codes';
+import uuidv4 from 'uuid/v4';
 import Sequelize from 'sequelize';
 import db from '../../database';
 
@@ -64,32 +65,68 @@ const routes = () => {
     const scoresArr = [];
     const { classId } = req.body;
     const classModel = await db.class.findById(classId);
+    console.log(classModel);
     if (!classModel) {
-      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({ message: 'Failllll' });
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({ message: 'Failllll 1' });
       return;
     }
+
+
+    // db.sequelize.transaction(t => db.student.create({
+    //   id: studentId,
+    //   name: req.body.studentName,
+    //   createdBy: '6ecd8c99-4036-403d-bf84-cf8400f67836',
+    //   updatedBy: '6ecd8c99-4036-403d-bf84-cf8400f67836',
+    //   scores: [
+    //     {
+    //       id: '75b639f0-ebdb-480a-abae-a772f0f58662',
+    //       studentId,
+    //       month: '1',
+    //       score: 'Test Score',
+    //       createdBy: '6ecd8c99-4036-403d-bf84-cf8400f67836',
+    //       updatedBy: '6ecd8c99-4036-403d-bf84-cf8400f67836',
+    //     },
+    //     {
+    //       id: '75b639f0-ebdb-480a-abae-a772f0f58662',
+    //       studentId,
+    //       month: '1',
+    //       score: 'Test Score',
+    //       createdBy: '6ecd8c99-4036-403d-bf84-cf8400f67836',
+    //       updatedBy: '6ecd8c99-4036-403d-bf84-cf8400f67836',
+    //     },
+    //   ],
+    // }, {
+    //   include: [{
+    //     model: db.score,
+    //     as: 'scores',
+    //   }]
+    // }));
+
+    const studentId = uuidv4();
+
     db.sequelize.transaction(t => db.student
       .create({
-        studentName: req.body.studentName,
-        createdBy: req.user.userId,
-        updatedBy: req.user.userId,
+        id: studentId,
+        name: req.body.studentName,
+        createdBy: '6ecd8c99-4036-403d-bf84-cf8400f67836',
+        updatedBy: '6ecd8c99-4036-403d-bf84-cf8400f67836',
       }, { transaction: t })
-      .then(student => db.class_student
+      .then(student => db.classStudent
         .create({
-          studentId: student.studentId,
+          studentId: student.id,
           classId,
-          createdBy: req.user.userId,
-          updatedBy: req.user.userId,
+          createdBy: '6ecd8c99-4036-403d-bf84-cf8400f67836',
+          updatedBy: '6ecd8c99-4036-403d-bf84-cf8400f67836',
         }, { transaction: t })
         .then(() => {
           // student.setClasses(classModel);
           student.setClasses(classModel, {
             through: {
-              studentId: student.studentId,
+              studentId: student.id,
               classId,
-              createdBy: req.user.userId,
+              createdBy: '6ecd8c99-4036-403d-bf84-cf8400f67836',
               createdDate: Date.now(),
-              updatedBy: req.user.userId,
+              updatedBy: '6ecd8c99-4036-403d-bf84-cf8400f67836',
               updatedDate: Date.now(),
             },
           });
@@ -98,12 +135,13 @@ const routes = () => {
       .then((student) => {
         req.body.scores.forEach((e) => {
           scoresArr.push({
-            studentId: student.studentId,
+            id: uuidv4(),
+            studentId: student.id,
             month: e.month,
             score: e.score,
             link: e.link,
-            createdBy: req.user.userId,
-            updatedBy: req.user.userId,
+            createdBy: '6ecd8c99-4036-403d-bf84-cf8400f67836',
+            updatedBy: '6ecd8c99-4036-403d-bf84-cf8400f67836',
           });
         });
         return db.score
@@ -117,7 +155,7 @@ const routes = () => {
         res.status(HttpStatus.OK).json({ data: student, message: 'okkk' });
       }).catch((e) => {
         console.log(e);
-        res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({ message: 'Failllll' });
+        res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({ message: 'Failllll 2' });
       });
   });
 
