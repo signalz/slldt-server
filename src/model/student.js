@@ -41,39 +41,6 @@ const StudentModel = (sequelize, DataTypes) => {
         },
       },
     },
-    parentName: {
-      field: 'parent_name',
-      type: DataTypes.STRING,
-      validate: {
-        len: {
-          args: [0, 250],
-          msg: 'Parent Name too long',
-        },
-      },
-    },
-    parentPhone: {
-      field: 'parent_phone',
-      type: DataTypes.STRING,
-      validate: {
-        len: {
-          args: [0, 250],
-          msg: 'Parent Phone too long',
-        },
-      },
-    },
-    parentMail: {
-      field: 'parent_mail',
-      type: DataTypes.STRING,
-      validate: {
-        len: {
-          args: [0, 250],
-          msg: 'Parent Mail too long',
-        },
-        isEmail: {
-          msg: 'Invalid email',
-        },
-      },
-    },
     address: {
       field: 'address',
       type: DataTypes.STRING,

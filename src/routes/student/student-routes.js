@@ -61,31 +61,64 @@ const routes = () => {
   });
 
   router.post('/', async (req, res) => {
-    db.student.create({
-      studentName: req.body.studentName,
-      admissionDate: req.body.admissionDate,
-      dateOfBirth: req.body.dateOfBirth,
-      school: req.body.school,
-      parentName: req.body.parentName,
-      parentPhone: req.body.parentPhone,
-      parentMail: req.body.parentMail,
-      address: req.body.address,
-      createdBy: req.user.userId,
-      updatedBy: req.user.userId,
-    }).then((student) => {
-      req.body.scores.forEach((e) => {
-        db.score.create({
+    const scoresArr = [];
+    const { classId } = req.body;
+    const classModel = await db.class.findById(classId);
+    if (!classModel) {
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({ message: 'Failllll' });
+      return;
+    }
+    db.sequelize.transaction(t => db.student
+      .create({
+        studentName: req.body.studentName,
+        createdBy: req.user.userId,
+        updatedBy: req.user.userId,
+      }, { transaction: t })
+      .then(student => db.class_student
+        .create({
           studentId: student.studentId,
-          month: e.month,
-          score: e.score,
-          link: e.link,
+          classId,
           createdBy: req.user.userId,
           updatedBy: req.user.userId,
+        }, { transaction: t })
+        .then(() => {
+          // student.setClasses(classModel);
+          student.setClasses(classModel, {
+            through: {
+              studentId: student.studentId,
+              classId,
+              createdBy: req.user.userId,
+              createdDate: Date.now(),
+              updatedBy: req.user.userId,
+              updatedDate: Date.now(),
+            },
+          });
+          return student;
+        }))
+      .then((student) => {
+        req.body.scores.forEach((e) => {
+          scoresArr.push({
+            studentId: student.studentId,
+            month: e.month,
+            score: e.score,
+            link: e.link,
+            createdBy: req.user.userId,
+            updatedBy: req.user.userId,
+          });
         });
+        return db.score
+          .bulkCreate(scoresArr, { returning: true, transaction: t })
+          .then((scores) => {
+            student.setScores(scores);
+            return student;
+          });
+      }))
+      .then((student) => {
+        res.status(HttpStatus.OK).json({ data: student, message: 'okkk' });
+      }).catch((e) => {
+        console.log(e);
+        res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({ message: 'Failllll' });
       });
-    });
-
-    res.send('hello world');
   });
 
   router.delete('/', async (req, res) => {

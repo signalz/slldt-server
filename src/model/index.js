@@ -6,7 +6,6 @@ import ClassStudentModel from './class-student';
 import UserModel from './user';
 import RoleModel from './role';
 import FunctionModel from './function';
-import UserRoleModel from './user-role';
 import RoleFunctionModel from './role-function';
 import RefreshTokenModel from './refresh-token';
 import ParentInfoModel from './parent-info';
@@ -20,7 +19,6 @@ export default {
   user: UserModel,
   role: RoleModel,
   function: FunctionModel,
-  userRole: UserRoleModel,
   roleFunction: RoleFunctionModel,
   refreshToken: RefreshTokenModel,
   parentInfo: ParentInfoModel,

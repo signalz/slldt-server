@@ -36,6 +36,11 @@ const UserModel = (sequelize, DataTypes) => {
       field: 'student_id',
       type: DataTypes.UUID,
     },
+    roleId: {
+      field: 'role_id',
+      type: DataTypes.UUID,
+      allowNull: false,
+    },
     dateOfBirth: {
       field: 'date_of_birth',
       type: DataTypes.DATEONLY,
@@ -99,8 +104,8 @@ const UserModel = (sequelize, DataTypes) => {
   });
   // Class Method
   User.associate = (models) => {
-    User.belongsToMany(models.role, {
-      as: 'roles', through: models.userRole, foreignKey: 'user_id', onDelete: 'CASCADE',
+    User.hasOne(models.role, {
+      as: 'roles', foreignKey: 'user_id',
     });
   };
 
