@@ -49,7 +49,10 @@ const RoleModel = (sequelize, DataTypes) => {
       foreignKey: 'role_id',
     });
     Role.belongsToMany(models.function, {
-      as: 'functions', through: models.roleFunction, foreignKey: 'role_id', onDelete: 'CASCADE',
+      as: 'functions',
+      through: models.roleFunction,
+      foreignKey: 'role_id',
+      onDelete: 'CASCADE',
     });
   };
 
