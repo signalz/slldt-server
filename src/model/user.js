@@ -36,11 +36,11 @@ const UserModel = (sequelize, DataTypes) => {
       field: 'student_id',
       type: DataTypes.UUID,
     },
-    roleId: {
-      field: 'role_id',
-      type: DataTypes.UUID,
-      allowNull: false,
-    },
+    // roleId: {
+    //   field: 'role_id',
+    //   type: DataTypes.UUID,
+    //   allowNull: false,
+    // },
     dateOfBirth: {
       field: 'date_of_birth',
       type: DataTypes.DATEONLY,
@@ -102,6 +102,14 @@ const UserModel = (sequelize, DataTypes) => {
     createdAt: 'createdDate',
     updatedAt: 'updatedDate',
   });
+
+  // Class Method
+  User.associate = (models) => {
+    User.belongsTo(models.role, {
+      as: 'role',
+      foreignKey: 'role_id',
+    });
+  };
 
   // Instance Method
   User.prototype.isPasswordMatched = function isPasswordMatched(password) {

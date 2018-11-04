@@ -13,17 +13,13 @@ const ExtractJWT = passportJWT.ExtractJwt;
 passport.use(new Strategy(async (username, password, done) => {
   try {
     const user = await db.user.findOne({
-      where: { username },
+      where: { username: 'admin' },
       include: [{
         model: db.role,
         as: 'role',
-        // attributes: [['role_id', 'roleId'], ['role_name', 'roleName']],
-        through: {
-          attributes: ['role_id'],
-        },
-      },
-      ],
+      }],
     });
+
     // user existed
     if (user) {
       // compare password
@@ -52,12 +48,7 @@ passport.use(new JWTStrategy({
       include: [{
         model: db.role,
         as: 'role',
-        // attributes: [['role_id', 'roleId'], ['role_name', 'roleName']],
-        through: {
-          attributes: ['role_id'],
-        },
-      },
-      ],
+      }],
     });
 
     if (user) {

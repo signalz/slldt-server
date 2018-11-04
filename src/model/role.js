@@ -44,9 +44,10 @@ const RoleModel = (sequelize, DataTypes) => {
 
   // Class Method
   Role.associate = (models) => {
-    // Role.hasOne(models.user, {
-    //   as: 'users', foreignKey: 'role_id', onDelete: 'CASCADE',
-    // });
+    Role.hasMany(models.user, {
+      as: 'users',
+      foreignKey: 'role_id',
+    });
     Role.belongsToMany(models.function, {
       as: 'functions', through: models.roleFunction, foreignKey: 'role_id', onDelete: 'CASCADE',
     });
