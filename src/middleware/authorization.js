@@ -9,10 +9,10 @@ const authorize = async (req, res, next) => {
   const { user, baseUrl, method } = req;
   const { roles } = user;
   const rolesIds = [];
-  roles.forEach(role => rolesIds.push(role.UserRole.role_id));
+  roles.forEach(role => rolesIds.push(role.id));
   const functions = await db.role.findAll({
     where: {
-      roleId: {
+      id: {
         [Op.in]: rolesIds,
       },
     },

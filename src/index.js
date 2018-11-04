@@ -60,5 +60,17 @@ db.sequelize
   .sync()
   .then(() => {
     app.listen(5000, () => logger.info('Example app listening on port 5000!'));
+    db.user.findOne({
+      where: { username: 'admin' },
+      include: [{
+        model: db.role,
+        as: 'role',
+        // attributes: [['role_id', 'roleId'], ['role_name', 'roleName']],
+        through: {
+          attributes: ['role_id'],
+        },
+      },
+      ],
+    }).then(user => console.log(user));
   })
   .catch(err => logger.error('Cannot connect to databse', err));
