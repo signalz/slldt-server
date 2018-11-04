@@ -16,6 +16,12 @@ const NotificationModel = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    isRead: {
+      field: 'is_read',
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
     createdBy: {
       field: 'created_by',
       type: DataTypes.UUID,

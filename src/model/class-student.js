@@ -1,9 +1,14 @@
 const ClassStudentModel = (sequelize, DataTypes) => {
   const ClassStudent = sequelize.define('ClassStudent', {
+    id: {
+      field: 'id',
+      type: DataTypes.UUID,
+      primaryKey: true,
+      allowNull: false,
+    },
     classId: {
       field: 'class_id',
       type: DataTypes.UUID,
-      primaryKey: true,
       allowNull: false,
     },
     studentId: {

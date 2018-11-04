@@ -105,7 +105,7 @@ const UserModel = (sequelize, DataTypes) => {
   // Class Method
   User.associate = (models) => {
     User.hasOne(models.role, {
-      as: 'roles', foreignKey: 'user_id',
+      as: 'roles',
     });
   };
 
