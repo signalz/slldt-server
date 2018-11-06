@@ -1,3 +1,5 @@
+import uuidv4 from 'uuid/v4';
+
 const ScoreModel = (sequelize, DataTypes) => {
   const Score = sequelize.define('Score', {
     id: {
@@ -5,11 +7,7 @@ const ScoreModel = (sequelize, DataTypes) => {
       type: DataTypes.UUID,
       primaryKey: true,
       allowNull: false,
-    },
-    studentId: {
-      field: 'student_id',
-      type: DataTypes.UUID,
-      allowNull: false,
+      defaultValue: uuidv4(),
     },
     month: {
       field: 'month',
@@ -63,6 +61,14 @@ const ScoreModel = (sequelize, DataTypes) => {
     createdAt: 'createdDate',
     updatedAt: 'updatedDate',
   });
+
+  // Class Method
+  Score.associate = (models) => {
+    Score.belongsTo(models.student, {
+      as: 'student',
+      foreignKey: 'student_id',
+    });
+  };
 
   return Score;
 };

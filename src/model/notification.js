@@ -6,11 +6,6 @@ const NotificationModel = (sequelize, DataTypes) => {
       primaryKey: true,
       allowNull: false,
     },
-    studentId: {
-      field: 'student_id',
-      type: DataTypes.UUID,
-      allowNull: false,
-    },
     content: {
       field: 'content',
       type: DataTypes.STRING,
@@ -47,6 +42,14 @@ const NotificationModel = (sequelize, DataTypes) => {
     createdAt: 'createdDate',
     updatedAt: 'updatedDate',
   });
+
+  // Class Method
+  Notification.associate = (models) => {
+    Notification.belongsTo(models.student, {
+      as: 'student',
+      foreignKey: 'student_id',
+    });
+  };
 
   return Notification;
 };

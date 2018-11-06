@@ -6,11 +6,6 @@ const ParentInfoModel = (sequelize, DataTypes) => {
       primaryKey: true,
       allowNull: false,
     },
-    student_id: {
-      field: 'student_id',
-      type: DataTypes.UUID,
-      allowNull: false,
-    },
     name: {
       field: 'name',
       type: DataTypes.STRING,
@@ -70,6 +65,14 @@ const ParentInfoModel = (sequelize, DataTypes) => {
     createdAt: 'createdDate',
     updatedAt: 'updatedDate',
   });
+
+  // Class Method
+  ParentInfo.associate = (models) => {
+    ParentInfo.belongsTo(models.student, {
+      as: 'student',
+      foreignKey: 'student_id',
+    });
+  };
 
   return ParentInfo;
 };
