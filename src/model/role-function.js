@@ -1,20 +1,24 @@
 const RoleFunctionModel = (sequelize, DataTypes) => {
   const RoleFunction = sequelize.define('RoleFunction', {
+    id: {
+      field: 'id',
+      type: DataTypes.UUID,
+      primaryKey: true,
+      allowNull: false,
+    },
     roleId: {
       field: 'role_id',
-      type: DataTypes.INTEGER,
-      primaryKey: true,
+      type: DataTypes.UUID,
       allowNull: false,
     },
     functionId: {
       field: 'function_id',
-      type: DataTypes.INTEGER,
-      primaryKey: true,
+      type: DataTypes.UUID,
       allowNull: false,
     },
     createdBy: {
       field: 'created_by',
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
     },
     createdDate: {
@@ -24,7 +28,7 @@ const RoleFunctionModel = (sequelize, DataTypes) => {
     },
     updatedBy: {
       field: 'updated_by',
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
     },
     updatedDate: {

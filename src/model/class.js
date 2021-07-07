@@ -1,14 +1,13 @@
 const ClassModel = (sequelize, DataTypes) => {
   const Class = sequelize.define('Class', {
-    classId: {
-      field: 'class_id',
-      type: DataTypes.INTEGER,
+    id: {
+      field: 'id',
+      type: DataTypes.UUID,
       primaryKey: true,
       allowNull: false,
-      autoIncrement: true,
     },
-    className: {
-      field: 'class_name',
+    name: {
+      field: 'name',
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
@@ -40,7 +39,7 @@ const ClassModel = (sequelize, DataTypes) => {
     },
     createdBy: {
       field: 'created_by',
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
     },
     createdDate: {
@@ -50,7 +49,7 @@ const ClassModel = (sequelize, DataTypes) => {
     },
     updatedBy: {
       field: 'updated_by',
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
     },
     updatedDate: {
@@ -67,7 +66,7 @@ const ClassModel = (sequelize, DataTypes) => {
   // Class Method
   Class.associate = (models) => {
     Class.belongsToMany(models.student, {
-      as: 'students', through: models.class_student, foreignKey: 'class_id', onDelete: 'CASCADE',
+      as: 'students', through: models.classStudent, foreignKey: 'class_id', otherKey: 'student_id',
     });
   };
 

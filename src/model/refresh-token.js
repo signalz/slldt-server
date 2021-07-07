@@ -14,13 +14,13 @@ const RefreshTokenModel = (sequelize, DataTypes) => {
     },
     userId: {
       field: 'user_id',
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       primaryKey: false,
       allowNull: false,
     },
     createdBy: {
       field: 'created_by',
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
     },
     createdDate: {
@@ -30,7 +30,7 @@ const RefreshTokenModel = (sequelize, DataTypes) => {
     },
     updatedBy: {
       field: 'updated_by',
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
     },
     updatedDate: {

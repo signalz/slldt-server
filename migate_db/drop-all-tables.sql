@@ -9,3 +9,4 @@ drop table if exists "user_role" cascade;
 drop table if exists "role_function" cascade;
 drop table if exists "function" cascade;
 drop table if exists "refresh_token" cascade;
+drop table if exists "parent_info" cascade;

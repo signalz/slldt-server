@@ -3,21 +3,20 @@ import { BCRYPT_SALT } from '../config';
 
 const UserModel = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
-    userId: {
-      field: 'user_id',
-      type: DataTypes.INTEGER,
+    id: {
+      field: 'id',
+      type: DataTypes.UUID,
       primaryKey: true,
       allowNull: false,
-      autoIncrement: true,
     },
-    userName: {
+    username: {
       field: 'user_name',
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
       len: {
         args: [0, 250],
-        msg: 'User Name too long',
+        msg: 'User name too long',
       },
     },
     password: {
@@ -33,9 +32,18 @@ const UserModel = (sequelize, DataTypes) => {
         msg: 'Name too long',
       },
     },
+    studenId: {
+      field: 'student_id',
+      type: DataTypes.UUID,
+    },
+    // roleId: {
+    //   field: 'role_id',
+    //   type: DataTypes.UUID,
+    //   allowNull: false,
+    // },
     dateOfBirth: {
       field: 'date_of_birth',
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       validate: {
         isDate: true,
       },
@@ -71,7 +79,7 @@ const UserModel = (sequelize, DataTypes) => {
     },
     createdBy: {
       field: 'created_by',
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
     },
     createdDate: {
@@ -81,7 +89,7 @@ const UserModel = (sequelize, DataTypes) => {
     },
     updatedBy: {
       field: 'updated_by',
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
     },
     updatedDate: {
@@ -94,10 +102,12 @@ const UserModel = (sequelize, DataTypes) => {
     createdAt: 'createdDate',
     updatedAt: 'updatedDate',
   });
+
   // Class Method
   User.associate = (models) => {
-    User.belongsToMany(models.role, {
-      as: 'roles', through: models.user_role, foreignKey: 'user_id', onDelete: 'CASCADE',
+    User.belongsTo(models.role, {
+      as: 'role',
+      foreignKey: 'role_id',
     });
   };
 

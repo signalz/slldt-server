@@ -1,14 +1,13 @@
 const StudentModel = (sequelize, DataTypes) => {
   const Student = sequelize.define('Student', {
-    studentId: {
-      field: 'student_id',
-      type: DataTypes.INTEGER,
+    id: {
+      field: 'id',
+      type: DataTypes.UUID,
       primaryKey: true,
       allowNull: false,
-      autoIncrement: true,
     },
-    studentName: {
-      field: 'student_name',
+    name: {
+      field: 'name',
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
@@ -42,39 +41,6 @@ const StudentModel = (sequelize, DataTypes) => {
         },
       },
     },
-    parentName: {
-      field: 'parent_name',
-      type: DataTypes.STRING,
-      validate: {
-        len: {
-          args: [0, 250],
-          msg: 'Parent Name too long',
-        },
-      },
-    },
-    parentPhone: {
-      field: 'parent_phone',
-      type: DataTypes.STRING,
-      validate: {
-        len: {
-          args: [0, 250],
-          msg: 'Parent Phone too long',
-        },
-      },
-    },
-    parentMail: {
-      field: 'parent_mail',
-      type: DataTypes.STRING,
-      validate: {
-        len: {
-          args: [0, 250],
-          msg: 'Parent Mail too long',
-        },
-        isEmail: {
-          msg: 'Invalid email',
-        },
-      },
-    },
     address: {
       field: 'address',
       type: DataTypes.STRING,
@@ -87,7 +53,7 @@ const StudentModel = (sequelize, DataTypes) => {
     },
     createdBy: {
       field: 'created_by',
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
     },
     createdDate: {
@@ -97,7 +63,7 @@ const StudentModel = (sequelize, DataTypes) => {
     },
     updatedBy: {
       field: 'updated_by',
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
     },
     updatedDate: {
@@ -116,8 +82,9 @@ const StudentModel = (sequelize, DataTypes) => {
   Student.associate = (models) => {
     Student.hasMany(models.score, { as: 'scores', foreignKey: 'student_id', onDelete: 'CASCADE' });
     Student.hasMany(models.notification, { as: 'notifications', foreignKey: 'student_id', onDelete: 'CASCADE' });
+    Student.hasMany(models.parentInfo, { as: 'parentInfo', foreignKey: 'student_id', onDelete: 'CASCADE' });
     Student.belongsToMany(models.class, {
-      as: 'classes', through: models.class_student, foreignKey: 'student_id', onDelete: 'CASCADE',
+      as: 'classes', through: models.classStudent, foreignKey: 'student_id', otherKey: 'class_id',
     });
   };
 

@@ -5,6 +5,7 @@ import passportJWT from 'passport-jwt';
 
 import { SERVER_KEY, TOKEN_EXPIRES } from '../config';
 import db from '../database';
+import logger from '../utils/logger';
 
 const JWTStrategy = passportJWT.Strategy;
 const ExtractJWT = passportJWT.ExtractJwt;
@@ -12,23 +13,18 @@ const ExtractJWT = passportJWT.ExtractJwt;
 passport.use(new Strategy(async (username, password, done) => {
   try {
     const user = await db.user.findOne({
-      where: { userName: username },
+      where: { username: 'admin' },
       include: [{
         model: db.role,
-        as: 'roles',
-        attributes: [['role_id', 'roleId'], ['role_name', 'roleName']],
-        through: {
-          attributes: ['role_id'],
-        },
-      },
-      ],
+        as: 'role',
+      }],
     });
+
     // user existed
     if (user) {
       // compare password
-      // console.log(user.validPassword(password));
       if (user.isPasswordMatched(password)) {
-        done(null, user.dataValues);
+        done(null, user);
       } else {
         done(null, false);
       }
@@ -36,7 +32,7 @@ passport.use(new Strategy(async (username, password, done) => {
       done(null, false);
     }
   } catch (e) {
-    console.log(e);
+    logger.error(e);
     done(null, false);
   }
 }));
@@ -48,28 +44,23 @@ passport.use(new JWTStrategy({
   const { id, exp } = jwtPayload;
   try {
     const user = await db.user.findOne({
-      where: { userId: id },
+      where: { id },
       include: [{
         model: db.role,
-        as: 'roles',
-        attributes: [['role_id', 'roleId'], ['role_name', 'roleName']],
-        through: {
-          attributes: ['role_id'],
-        },
-      },
-      ],
+        as: 'role',
+      }],
     });
 
     if (user) {
       // if token expires => user trying to access login-with-token
       if (exp * 1000 < new Date().getTime()) {
-        return next(null, user.dataValues, { isExp: true });
+        return next(null, user, { isExp: true });
       }
 
-      return next(null, user.dataValues);
+      return next(null, user);
     }
   } catch (e) {
-    console.log(e);
+    logger.error(e);
   }
 
   return next();

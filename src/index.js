@@ -51,8 +51,8 @@ app.use('/users', passport.authenticate('jwt', { session: false }), authorize, r
 
 app.use(
   '/students',
-  passport.authenticate('jwt', { session: false }),
-  authorize,
+  // passport.authenticate('jwt', { session: false }),
+  // authorize,
   routes.studentRoutes(),
 );
 

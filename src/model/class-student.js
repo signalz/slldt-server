@@ -1,19 +1,27 @@
+import uuidv4 from 'uuid/v4';
+
 const ClassStudentModel = (sequelize, DataTypes) => {
   const ClassStudent = sequelize.define('ClassStudent', {
+    id: {
+      field: 'id',
+      type: DataTypes.UUID,
+      primaryKey: true,
+      allowNull: false,
+      defaultValue: uuidv4(),
+    },
     classId: {
       field: 'class_id',
-      type: DataTypes.INTEGER,
-      primaryKey: true,
+      type: DataTypes.UUID,
       allowNull: false,
     },
     studentId: {
       field: 'student_id',
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
     },
     createdBy: {
       field: 'created_by',
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
     },
     createdDate: {
@@ -23,7 +31,7 @@ const ClassStudentModel = (sequelize, DataTypes) => {
     },
     updatedBy: {
       field: 'updated_by',
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
     },
     updatedDate: {

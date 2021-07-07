@@ -1,14 +1,13 @@
 const RoleModel = (sequelize, DataTypes) => {
   const Role = sequelize.define('Role', {
-    roleId: {
-      field: 'role_id',
-      type: DataTypes.INTEGER,
+    id: {
+      field: 'id',
+      type: DataTypes.UUID,
       primaryKey: true,
       allowNull: false,
-      autoIncrement: true,
     },
-    roleName: {
-      field: 'role_name',
+    name: {
+      field: 'name',
       type: DataTypes.STRING,
       validate: {
         len: {
@@ -19,7 +18,7 @@ const RoleModel = (sequelize, DataTypes) => {
     },
     createdBy: {
       field: 'created_by',
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
     },
     createdDate: {
@@ -29,7 +28,7 @@ const RoleModel = (sequelize, DataTypes) => {
     },
     updatedBy: {
       field: 'updated_by',
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
     },
     updatedDate: {
@@ -45,11 +44,15 @@ const RoleModel = (sequelize, DataTypes) => {
 
   // Class Method
   Role.associate = (models) => {
-    Role.belongsToMany(models.user, {
-      as: 'users', through: models.user_role, foreignKey: 'role_id', onDelete: 'CASCADE',
+    Role.hasMany(models.user, {
+      as: 'users',
+      foreignKey: 'role_id',
     });
     Role.belongsToMany(models.function, {
-      as: 'functions', through: models.role_function, foreignKey: 'role_id', onDelete: 'CASCADE',
+      as: 'functions',
+      through: models.roleFunction,
+      foreignKey: 'role_id',
+      onDelete: 'CASCADE',
     });
   };
 

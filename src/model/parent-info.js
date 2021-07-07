@@ -1,5 +1,5 @@
-const FunctionModel = (sequelize, DataTypes) => {
-  const Function = sequelize.define('Function', {
+const ParentInfoModel = (sequelize, DataTypes) => {
+  const ParentInfo = sequelize.define('ParentInfo', {
     id: {
       field: 'id',
       type: DataTypes.UUID,
@@ -9,30 +9,34 @@ const FunctionModel = (sequelize, DataTypes) => {
     name: {
       field: 'name',
       type: DataTypes.STRING,
+      allowNull: false,
       validate: {
         len: {
           args: [0, 250],
-          msg: 'Function Name too long',
+          msg: 'Parent Name too long',
         },
       },
     },
-    method: {
-      field: 'method',
+    phoneNumber: {
+      field: 'phone_number',
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        args: [['POST', 'GET', 'PUT', 'PATCH', 'DELETE', 'ALL']],
-        msg: 'Wrong Method',
-      },
-    },
-    path: {
-      field: 'path',
-      type: DataTypes.STRING,
-      allowNull: false,
       validate: {
         len: {
           args: [0, 250],
-          msg: 'Function Name too long',
+          msg: 'Phone number too long',
+        },
+      },
+    },
+    mail: {
+      field: 'mail',
+      type: DataTypes.STRING,
+      validate: {
+        len: {
+          args: [0, 250],
+          msg: 'Mail too long',
+        },
+        isEmail: {
+          msg: 'Invalid email',
         },
       },
     },
@@ -57,22 +61,20 @@ const FunctionModel = (sequelize, DataTypes) => {
       allowNull: false,
     },
   }, {
-    tableName: 'function',
+    tableName: 'parent_info',
     createdAt: 'createdDate',
     updatedAt: 'updatedDate',
   });
 
-  // Class method
-  Function.associate = (models) => {
-    Function.belongsToMany(models.role, {
-      as: 'roles',
-      through: models.roleFunction,
-      foreignKey: 'function_id',
-      onDelete: 'CASCADE',
+  // Class Method
+  ParentInfo.associate = (models) => {
+    ParentInfo.belongsTo(models.student, {
+      as: 'student',
+      foreignKey: 'student_id',
     });
   };
 
-  return Function;
+  return ParentInfo;
 };
 
-export default FunctionModel;
+export default ParentInfoModel;

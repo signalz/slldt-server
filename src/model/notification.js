@@ -1,15 +1,8 @@
 const NotificationModel = (sequelize, DataTypes) => {
   const Notification = sequelize.define('Notification', {
-    notifyId: {
-      field: 'notify_id',
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      allowNull: false,
-      autoIncrement: true,
-    },
-    studentId: {
-      field: 'student_id',
-      type: DataTypes.INTEGER,
+    id: {
+      field: 'id',
+      type: DataTypes.UUID,
       primaryKey: true,
       allowNull: false,
     },
@@ -18,9 +11,15 @@ const NotificationModel = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    isRead: {
+      field: 'is_read',
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
     createdBy: {
       field: 'created_by',
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
     },
     createdDate: {
@@ -30,7 +29,7 @@ const NotificationModel = (sequelize, DataTypes) => {
     },
     updatedBy: {
       field: 'updated_by',
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
     },
     updatedDate: {
@@ -43,6 +42,14 @@ const NotificationModel = (sequelize, DataTypes) => {
     createdAt: 'createdDate',
     updatedAt: 'updatedDate',
   });
+
+  // Class Method
+  Notification.associate = (models) => {
+    Notification.belongsTo(models.student, {
+      as: 'student',
+      foreignKey: 'student_id',
+    });
+  };
 
   return Notification;
 };

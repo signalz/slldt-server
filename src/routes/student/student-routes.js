@@ -1,5 +1,6 @@
 import express from 'express';
 import HttpStatus from 'http-status-codes';
+import uuidv4 from 'uuid/v4';
 import Sequelize from 'sequelize';
 import db from '../../database';
 
@@ -21,7 +22,7 @@ const routes = () => {
     }
 
     if (studentName) {
-      query.push({ studentName: { [Op.like]: `%${req.query.studentName}%` } });
+      query.push({ name: { [Op.like]: `%${req.query.studentName}%` } });
     }
 
     if (fromAdmissionDate) {
@@ -33,17 +34,16 @@ const routes = () => {
     }
 
     if (className) {
-      subQuery.push({ class_name: { [Op.like]: `%${req.query.className}%` } });
+      subQuery.push({ name: { [Op.like]: `%${req.query.className}%` } });
     }
-    console.log(query);
     try {
       await db.student.findAndCountAll({
         include: [{
           model: db.class,
           as: 'classes',
-          attributes: [['class_id', 'classId'], ['class_name', 'className']],
+          attributes: [['id', 'classId'], ['name', 'className']],
           through: {
-            attributes: ['class_id'],
+            attributes: ['id'],
           },
           where: subQuery,
         }],
@@ -62,31 +62,148 @@ const routes = () => {
   });
 
   router.post('/', async (req, res) => {
-    db.student.create({
-      studentName: req.body.studentName,
-      admissionDate: req.body.admissionDate,
-      dateOfBirth: req.body.dateOfBirth,
-      school: req.body.school,
-      parentName: req.body.parentName,
-      parentPhone: req.body.parentPhone,
-      parentMail: req.body.parentMail,
-      address: req.body.address,
-      createdBy: req.user.userId,
-      updatedBy: req.user.userId,
-    }).then((student) => {
-      req.body.scores.forEach((e) => {
-        db.score.create({
-          studentId: student.studentId,
-          month: e.month,
-          score: e.score,
-          link: e.link,
-          createdBy: req.user.userId,
-          updatedBy: req.user.userId,
-        });
+    const scoresArr = [];
+    const { classId } = req.body;
+    const classModel = await db.class.findById(classId);
+    if (!classModel) {
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({ message: 'Failllll 1' });
+      return;
+    }
+
+    const studentId = uuidv4();
+
+    req.body.scores.forEach((e) => {
+      scoresArr.push({
+        studentId,
+        month: e.month,
+        score: e.score,
+        link: e.link,
+        createdBy: '6ecd8c99-4036-403d-bf84-cf8400f67836',
+        updatedBy: '6ecd8c99-4036-403d-bf84-cf8400f67836',
       });
     });
 
-    res.send('hello world');
+    try {
+      const studentData = await db.sequelize.transaction(t => db.student.create({
+        id: studentId,
+        name: req.body.studentName,
+        createdBy: '6ecd8c99-4036-403d-bf84-cf8400f67836',
+        updatedBy: '6ecd8c99-4036-403d-bf84-cf8400f67836',
+        scores: scoresArr,
+      }, {
+        include: [{
+          model: db.score,
+          as: 'scores',
+        }],
+      }, { transaction: t }));
+      await studentData.setClasses(classModel, {
+        through: {
+          studentId: studentData.id,
+          classId,
+          createdBy: '6ecd8c99-4036-403d-bf84-cf8400f67836',
+          createdDate: Date.now(),
+          updatedBy: '6ecd8c99-4036-403d-bf84-cf8400f67836',
+          updatedDate: Date.now(),
+        },
+      });
+      studentData.class = classModel;
+      console.log(studentData);
+      res.status(HttpStatus.OK).send({ data: studentData, message: 'okkk' });
+    } catch (error) {
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({ message: 'Cannot create user' });
+    }
+
+    // db.sequelize.transaction(t => db.student.create({
+    //   id: studentId,
+    //   name: req.body.studentName,
+    //   createdBy: '6ecd8c99-4036-403d-bf84-cf8400f67836',
+    //   updatedBy: '6ecd8c99-4036-403d-bf84-cf8400f67836',
+    //   scores: scoresArr,
+    // }, {
+    //   include: [{
+    //     model: db.score,
+    //     as: 'scores',
+    //   }],
+    // }, { transaction: t })
+    //   .then((student) => {
+    //     student.setClasses(classModel, {
+    //       through: {
+    //         studentId: student.id,
+    //         classId,
+    //         createdBy: '6ecd8c99-4036-403d-bf84-cf8400f67836',
+    //         createdDate: Date.now(),
+    //         updatedBy: '6ecd8c99-4036-403d-bf84-cf8400f67836',
+    //         updatedDate: Date.now(),
+    //       },
+    //     }, { transaction: t });
+    //   })).then(() => {
+    //   db.student.findOne({
+    //     where: { id: studentId },
+    //     include: [{ all: true, nested: true }],
+    //   }).then((result) => {
+    //     res.status(HttpStatus.OK).send({ data: result, message: 'okkk' });
+    //   });
+    // }).catch((e) => {
+    //   console.log(e);
+    //   res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({ message: 'Failllll 2' });
+    // });
+
+    // db.sequelize.transaction(t => db.student
+    //   .create({
+    //     id: studentId,
+    //     name: req.body.studentName,
+    //     createdBy: '6ecd8c99-4036-403d-bf84-cf8400f67836',
+    //     updatedBy: '6ecd8c99-4036-403d-bf84-cf8400f67836',
+    //   }, { transaction: t })
+    //   .then(student => db.classStudent
+    //     .create({
+    //       id: classStudentId,
+    //       studentId: student.id,
+    //       classId,
+    //       createdBy: '6ecd8c99-4036-403d-bf84-cf8400f67836',
+    //       updatedBy: '6ecd8c99-4036-403d-bf84-cf8400f67836',
+    //     }, { transaction: t })
+    //     .then(() => {
+    //       // student.setClasses(classModel);
+    //       student.setClasses(classModel, {
+    //         through: {
+    //           id: classStudentId,
+    //           studentId: student.id,
+    //           classId,
+    //           createdBy: '6ecd8c99-4036-403d-bf84-cf8400f67836',
+    //           createdDate: Date.now(),
+    //           updatedBy: '6ecd8c99-4036-403d-bf84-cf8400f67836',
+    //           updatedDate: Date.now(),
+    //         },
+    //       });
+    //       return student;
+    //     }))
+    //   .then((student) => {
+    //     req.body.scores.forEach((e) => {
+    //       scoresArr.push({
+    //         id: uuidv4(),
+    //         studentId: student.id,
+    //         month: e.month,
+    //         score: e.score,
+    //         link: e.link,
+    //         createdBy: '6ecd8c99-4036-403d-bf84-cf8400f67836',
+    //         updatedBy: '6ecd8c99-4036-403d-bf84-cf8400f67836',
+    //       });
+    //     });
+    //     return db.score
+    //       .bulkCreate(scoresArr, { returning: true, transaction: t })
+    //       .then((scores) => {
+    //         student.setScores(scores).then((s) => { console.log(s); return s; });
+    //       });
+    //   }))
+    //   .then((student) => {
+    //     // student.getScores().then(score => console.log(score));
+    //     // student.getClasses().then(cl => console.log(cl));
+    //     res.status(HttpStatus.OK).json({ data: student, message: 'okkk' });
+    //   }).catch((e) => {
+    //     console.log(e);
+    //     res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({ message: 'Failllll 2' });
+    //   });
   });
 
   router.delete('/', async (req, res) => {
